@@ -9,3 +9,80 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+ id Int @id @default(autoincrement())
+ fullName String @unique
+ accounts Account[]
+}
+
+model Account {
+ id Int @id @default(autoincrement())
+ email String
+ owner User @relation(fields: [ownerId], references: [id])
+ ownerId Int
+ exchangeId Int
+ exchange Exchange @relation(fields: [exchangeId], references: [id])
+ exchangeUserId Int
+}
+
+enum ExchangeName {
+  YOUNG_PLATFORM
+  CRYPTO_COM_APP
+  CRYPTO_COM_EXCHANGE
+  BITPANDA
+  BITPANDA_PRO
+  NEXO
+}
+
+model Exchange {
+ id Int @id @default(autoincrement())
+ name ExchangeName
+ userAccounts Account[]
+}
+
+enum TransactionSide {
+ BUY
+ SELL
+}
+
+enum CurrencyName {
+ EUR
+ BTC
+ ETH
+ SOL
+ MATIC
+ DOT
+ LINK
+ AVAX
+ AAVE
+ YFI
+ DOGE
+}
+
+enum CurrencyTypology {
+ CRYPTO
+ FIAT
+}
+
+model Currency {
+ id Int @id @default(autoincrement())
+ name CurrencyName @unique
+ typology CurrencyTypology
+}
+
+model YoungTransaction {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ txnId Int
+ base CurrencyName
+ quote CurrencyName
+ amount String
+ volume Float
+ rate Float
+ brokerage Float
+ brokerageCurrency Float
+ side TransactionSide
+ date DateTime
+ originalData Json
+}

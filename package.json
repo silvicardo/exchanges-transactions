@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node prisma/seed.ts",
-    "parse": "ts-node -r dotenv/config commands/parse.ts"
+    "parse": "ts-node -r dotenv/config commands/parse.ts",
+    "parse:yp" : "ts-node -r dotenv/config commands/yp.ts"
   },
   "keywords": [],
   "author": "",

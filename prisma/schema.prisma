@@ -58,7 +58,53 @@ enum CurrencyName {
  AAVE
  YFI
  DOGE
+ BCH
+ LTC
+ XLM
+ XRP
+ DASH
+ EOS
+ XTZ
+ UNI
+ BAT
+ ADA
+ LUNA
+ REPV2
+ USDT
+ USDC
+ KNC
+ MKR
+ SUSHI
+ SNX
+ SAND
+ MANA
+ ENJ
+ CRO
+ UMA
+ CHR
+ VET
+ GALA
+ EGLD
+ SHIB
+ ALGO
+ AXS
+ ONE
+ ELON
+ KDA
+ THETA
+ ATOM
+ NEXO
+ EURX
+ BEST
+ FIL
+ TRX
+ ICP
+ BNB
+ FTT
+ FTM
+ PAXG
 }
+
 
 enum CurrencyTypology {
  CRYPTO
@@ -71,17 +117,17 @@ model Currency {
  typology CurrencyTypology
 }
 
-model YoungTransaction {
+model YoungPlatformTrade {
  id Int @id @default(autoincrement())
  userAccountId Int
- txnId Int
+ txnId Int @unique
  base CurrencyName
  quote CurrencyName
- amount String
+ amount Float
  volume Float
  rate Float
  brokerage Float
- brokerageCurrency Float
+ brokerageCurrency CurrencyName
  side TransactionSide
  date DateTime
  originalData Json

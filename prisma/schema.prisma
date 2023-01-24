@@ -103,12 +103,29 @@ enum CurrencyName {
  FTT
  FTM
  PAXG
+ YNG
+ ETHW
+ LUNA2
 }
 
 
 enum CurrencyTypology {
  CRYPTO
  FIAT
+}
+
+enum YPTxType {
+ DEPOSIT
+ WITHDRAWAL
+ ORDER_PLACEMENT
+ ORDER_MATCHED
+ ORDER_CANCELLED
+ REFERRAL
+ ADMIN
+ FEE
+ STAKING_TRANSACTION
+ STAKING_REWARD
+ GIFTCARD_STEPDROP
 }
 
 model Currency {
@@ -130,5 +147,17 @@ model YoungPlatformTrade {
  brokerageCurrency CurrencyName
  side TransactionSide
  date DateTime
+ originalData Json
+}
+
+model YoungPlatformMovement {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ moveId Int @unique
+ credit Float
+ debit Float
+ currency CurrencyName
+ date DateTime
+ txType YPTxType
  originalData Json
 }

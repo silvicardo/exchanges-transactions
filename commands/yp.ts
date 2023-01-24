@@ -1,12 +1,12 @@
-import { parsers } from "../src/parsers/YOUNG_PLATFORM";
+import { handlers } from "../src/handlers/YOUNG_PLATFORM";
 import argv from "process.argv";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const processArgv = argv(process.argv.slice(2));
 
 interface Config {
-  year: keyof typeof parsers;
-  type: "buy_sell_swap";
+  year: "2021" | "2022" | "2023";
+  type: "buy_sell_swap" | "deposit_withdraw_fee_order";
   account_id: number;
 }
 const { year, type, account_id } = processArgv<Config>({
@@ -17,27 +17,17 @@ const { year, type, account_id } = processArgv<Config>({
 
 const prisma = new PrismaClient();
 
-if (typeof parsers[year]?.[type] === "function") {
-  parsers[year][type]()
-    .then((transactions) => {
-      return Promise.all(
-        transactions.map(async ({ originalData, ...trans }) => {
-          console.log("adding txnId", trans.txnId);
-          const data = {
-            ...trans,
-            originalData: [originalData] as Prisma.JsonArray,
-            userAccountId: account_id,
-          };
-          await prisma.youngPlatformTrade.upsert({
-            where: { txnId: trans.txnId },
-            create: data,
-            update: data,
-          });
-          console.log("added txnId", trans.txnId);
-        })
-      );
-    })
-    .catch((e) => {
+if (
+  ["2021", "2022", "2023"].includes(year) &&
+  ["buy_sell_swap", "deposit_withdraw_fee_order"].includes(type) &&
+  account_id !== 123456
+) {
+  handlers[type]({
+    prisma,
+    year,
+    userAccountId: +account_id,
+  })
+    .catch((e: any) => {
       console.log(e);
       process.exit(1);
     })

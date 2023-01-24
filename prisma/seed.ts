@@ -67,6 +67,9 @@ async function createCurrencies() {
         "FTT",
         "FTM",
         "PAXG",
+        "YNG",
+        "ETHW",
+        "LUNA2",
       ] as const
     ).map((c) => ({
       name: c,

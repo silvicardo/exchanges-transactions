@@ -69,6 +69,8 @@ enum CurrencyName {
  BAT
  ADA
  LUNA
+ LUNC
+ NEAR
  REPV2
  USDT
  USDC
@@ -159,5 +161,54 @@ model YoungPlatformMovement {
  currency CurrencyName
  date DateTime
  txType YPTxType
+ originalData Json
+}
+
+enum BitpandaTxnType {
+ deposit
+ buy
+ sell
+ withdrawal
+ transfer
+}
+
+enum BitpandaInOutType {
+ incoming
+ outgoing
+}
+
+enum BitpandaAssetClass {
+ Fiat
+ Cryptocurrency
+}
+
+enum BitpandaSupportedFiats {
+ EUR
+}
+
+enum BitpandaFeeCurrencyName {
+ EUR
+ BEST
+}
+
+model BitpandaTrade {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ transactionId String @unique
+ timestamp DateTime
+ transactionType BitpandaTxnType
+ inOut BitpandaInOutType
+ amountFiat Float
+ fiat BitpandaSupportedFiats
+ amountAsset Float?
+ asset CurrencyName
+ assetMarketPrice Float?
+ assetMarketPriceCurrency BitpandaSupportedFiats?
+ assetClass BitpandaAssetClass
+ productId Int?
+ fee Float?
+ feeAsset BitpandaFeeCurrencyName?
+ spread Float?
+ spreadCurrency CurrencyName?
  originalData Json
 }

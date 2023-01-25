@@ -8,7 +8,7 @@
     "seed": "ts-node prisma/seed.ts",
     "parse": "ts-node -r dotenv/config commands/parse.ts",
     "parse:yp" : "ts-node -r dotenv/config commands/yp.ts",
-    "parse:bitpanda" : "ts-node -r dotenv/config commands/bitpanda.ts"
+    "parse:bitpanda" : "ts-node -r dotenv/config commands/bitpanda.ts","parse:bitpanda-pro" : "ts-node -r dotenv/config commands/bitpanda_pro.ts"
   },
   "keywords": [],
   "author": "",

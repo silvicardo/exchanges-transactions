@@ -212,3 +212,55 @@ model BitpandaTrade {
  spreadCurrency CurrencyName?
  originalData Json
 }
+
+enum BitpandaProDepositWithdrawType {
+ Deposit
+ Withdrawal
+}
+
+enum BitpandaProDepositWithdrawInOutType {
+ Incoming
+ Outgoing
+}
+
+enum BitpandaProDepositWithdrawInternalExternalType {
+ Internal
+ External
+}
+
+model BitpandaProDepositWithdraw {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ transactionId String @unique
+ externalTransactionId String?
+ type BitpandaProDepositWithdrawType
+ inOut BitpandaProDepositWithdrawInOutType
+ internalExternal BitpandaProDepositWithdrawInternalExternalType
+ amount Float
+ currency CurrencyName
+ fee Float
+ timeCreated String
+ accountId String
+ accountName String
+ originalData Json
+}
+
+model BitpandaProTrade {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ orderId String @unique
+ tradeId String @unique
+ type TransactionSide
+ market String
+ amount Float
+ amountCurrency CurrencyName
+ price Float
+ priceCurrency CurrencyName
+ fee Float
+ feeCurrency CurrencyName
+ timeUtc DateTime
+ bestEurRate Float?
+ accountId String
+ accountName String
+ originalData Json
+}

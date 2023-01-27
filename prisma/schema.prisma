@@ -108,6 +108,7 @@ enum CurrencyName {
  YNG
  ETHW
  LUNA2
+ APE
 }
 
 
@@ -342,4 +343,37 @@ model CryptoComCardTransaction {
  nativeAmountInUsd Float
  transactionKind String?
  transactionHash String?
+}
+
+enum NexoTransactionType {
+ Deposit
+ LockingTermDeposit
+ Exchange
+ DepositToExchange
+ ExchangeDepositedOn
+ ExchangeCashback
+ LockingTermDeposit
+ UnlockingTermDeposit
+ Interest
+ FixedTermInterest
+ TransferOut
+ TransferIn
+ CreditCardStatus
+ Cashback
+ Liquidation
+ Repayment
+ Withdrawal
+ Administrator
+}
+
+model NexoTransactionType {
+ id Int @id @default(autoincrement())
+ type NexoTransactionType
+ inputCurrency CurrencyName
+ inputAmount Float
+ outputCurrency CurrencyName
+ outputAmount Float
+ usdEquivalent Float
+ details String
+ DateTime DateTime
 }

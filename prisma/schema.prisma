@@ -48,6 +48,7 @@ enum TransactionSide {
 
 enum CurrencyName {
  EUR
+ USD
  BTC
  ETH
  SOL
@@ -276,7 +277,7 @@ enum CryptoComFiatTransactionKind {
 model CryptoComFiatTransaction {
  id Int @id @default(autoincrement())
  userAccountId Int
- timestampUtc DateTime
+ timestampUtc DateTime @unique
  transactionDescription String
  currency CurrencyName
  amount Float
@@ -287,11 +288,13 @@ model CryptoComFiatTransaction {
  nativeAmountInUsd Float
  transactionKind CryptoComFiatTransactionKind
  transactionHash String?
+ originalData Json
 }
 
 enum CryptoComCryptoTransactionKind {
  referral_card_cashback
  viban_purchase
+ crypto_viban_exchange
  crypto_earn_program_created
  crypto_earn_interest_paid
  crypto_earn_program_withdrawn
@@ -302,17 +305,20 @@ enum CryptoComCryptoTransactionKind {
  crypto_exchange
  crypto_purchase
  dust_conversion_credited
+ dust_conversion_debited
  crypto_deposit
+ crypto_withdrawal
  rewards_platform_deposit_credited
  referral_gift
  referral_bonus
  lockup_lock
+ reimbursement
 }
 
 model CryptoComCryptoTransaction {
  id Int @id @default(autoincrement())
  userAccountId Int
- timestampUtc DateTime
+ timestampUtc DateTime @unique
  transactionDescription String
  currency CurrencyName
  amount Float
@@ -323,6 +329,7 @@ model CryptoComCryptoTransaction {
  nativeAmountInUsd Float
  transactionKind CryptoComCryptoTransactionKind
  transactionHash String?
+ originalData Json
 }
 
 enum CryptoComCardCurrency {
@@ -332,7 +339,7 @@ enum CryptoComCardCurrency {
 model CryptoComCardTransaction {
  id Int @id @default(autoincrement())
  userAccountId Int
- timestampUtc DateTime
+ timestampUtc DateTime @unique
  transactionDescription String
  currency CryptoComCardCurrency
  amount Float
@@ -343,6 +350,7 @@ model CryptoComCardTransaction {
  nativeAmountInUsd Float
  transactionKind String?
  transactionHash String?
+ originalData Json
 }
 
 enum NexoTransactionType {
@@ -352,7 +360,6 @@ enum NexoTransactionType {
  DepositToExchange
  ExchangeDepositedOn
  ExchangeCashback
- LockingTermDeposit
  UnlockingTermDeposit
  Interest
  FixedTermInterest
@@ -366,7 +373,7 @@ enum NexoTransactionType {
  Administrator
 }
 
-model NexoTransactionType {
+model NexoTransaction {
  id Int @id @default(autoincrement())
  type NexoTransactionType
  inputCurrency CurrencyName

@@ -321,7 +321,7 @@ model CryptoComCryptoTransaction {
  nativeCurrency CurrencyName
  nativeAmount Float
  nativeAmountInUsd Float
- transactionKind
+ transactionKind CryptoComCryptoTransactionKind
  transactionHash String?
 }
 

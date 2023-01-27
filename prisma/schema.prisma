@@ -264,3 +264,82 @@ model BitpandaProTrade {
  accountName String
  originalData Json
 }
+
+enum CryptoComFiatTransactionKind {
+ viban_card_top_up
+ viban_deposit
+ viban_purchase
+ crypto_viban
+}
+
+model CryptoComFiatTransaction {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ timestampUtc DateTime
+ transactionDescription String
+ currency CurrencyName
+ amount Float
+ toCurrency CurrencyName
+ toAmount Float
+ nativeCurrency CurrencyName
+ nativeAmount Float
+ nativeAmountInUsd Float
+ transactionKind CryptoComFiatTransactionKind
+ transactionHash String?
+}
+
+enum CryptoComCryptoTransactionKind {
+ referral_card_cashback
+ viban_purchase
+ crypto_earn_program_created
+ crypto_earn_interest_paid
+ crypto_earn_program_withdrawn
+ exchange_to_crypto_transfer
+ crypto_to_exchange_transfer
+ supercharger_deposit
+ supercharger_reward_to_app_credited
+ crypto_exchange
+ crypto_purchase
+ dust_conversion_credited
+ crypto_deposit
+ rewards_platform_deposit_credited
+ referral_gift
+ referral_bonus
+ lockup_lock
+}
+
+model CryptoComCryptoTransaction {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ timestampUtc DateTime
+ transactionDescription String
+ currency CurrencyName
+ amount Float
+ toCurrency CurrencyName?
+ toAmount Float?
+ nativeCurrency CurrencyName
+ nativeAmount Float
+ nativeAmountInUsd Float
+ transactionKind
+ transactionHash String?
+}
+
+enum CryptoComCardCurrency {
+ EUR
+}
+
+model CryptoComCardTransaction {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ timestampUtc DateTime
+ transactionDescription String
+ currency CryptoComCardCurrency
+ amount Float
+ toCurrency CryptoComCardCurrency?
+ toAmount Float?
+ nativeCurrency CurrencyName
+ nativeAmount Float
+ nativeAmountInUsd Float
+ transactionKind String?
+ transactionHash String?
+}

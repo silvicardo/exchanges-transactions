@@ -10,7 +10,8 @@
     "parse:yp" : "ts-node -r dotenv/config commands/yp.ts",
     "parse:bitpanda" : "ts-node -r dotenv/config commands/bitpanda.ts",
     "parse:bitpanda-pro" : "ts-node -r dotenv/config commands/bitpanda_pro.ts",
-    "parse:crypto-com-app" : "ts-node -r dotenv/config commands/crypto_com_app.ts"
+    "parse:crypto-com-app" : "ts-node -r dotenv/config commands/crypto_com_app.ts",
+    "parse:nexo" : "ts-node -r dotenv/config commands/nexo.ts"
   },
   "keywords": [],
   "author": "",

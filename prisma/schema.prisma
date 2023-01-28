@@ -110,6 +110,7 @@ enum CurrencyName {
  ETHW
  LUNA2
  APE
+ UST
 }
 
 
@@ -375,12 +376,15 @@ enum NexoTransactionType {
 
 model NexoTransaction {
  id Int @id @default(autoincrement())
+ userAccountId Int
+ transactionId String @unique
  type NexoTransactionType
  inputCurrency CurrencyName
  inputAmount Float
- outputCurrency CurrencyName
+ outputCurrency CurrencyName?
  outputAmount Float
  usdEquivalent Float
  details String
- DateTime DateTime
+ dateTime DateTime
+ originalData Json
 }

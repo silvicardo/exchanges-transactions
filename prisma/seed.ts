@@ -72,6 +72,7 @@ async function createCurrencies() {
         "LUNA2",
         "LUNC",
         "NEAR",
+        "UST",
       ] as const
     ).map((c) => ({
       name: c,

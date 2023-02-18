@@ -9,7 +9,7 @@ export const handle = (data: YoungPlatformMovement[]) => {
     "Received Currency": o.currency,
     "Fee Amount": 0,
     "Fee Currency": o.currency,
-    Label: "Deposit",
-    Description: "Deposit",
+    Label: o.txType.toUpperCase(),
+    Description: `${o.currency} ${o.txType.toUpperCase()} - Id: ${o.moveId}`,
   }));
 };

@@ -9,8 +9,8 @@ const handleWithdrawal = (o: YoungPlatformMovement): KoinlyUniversal => ({
   "Received Currency": o.currency,
   "Fee Amount": 0,
   "Fee Currency": o.currency,
-  Label: o.txType,
-  Description: o.txType,
+  Label: o.txType.toUpperCase(),
+  Description: `${o.currency} ${o.txType.toUpperCase()} - Id: ${o.moveId}`,
 });
 
 const handleFee = (o: YoungPlatformMovement): KoinlyUniversal => ({
@@ -21,8 +21,8 @@ const handleFee = (o: YoungPlatformMovement): KoinlyUniversal => ({
   "Received Currency": o.currency,
   "Fee Amount": o.debit,
   "Fee Currency": o.currency,
-  Label: o.txType,
-  Description: o.txType,
+  Label: o.txType.toUpperCase(),
+  Description: `${o.currency} ${o.txType.toUpperCase()} - Id: ${o.moveId}`,
 });
 
 const getGroupedWithdrawalsFeesByDate = (data: YoungPlatformMovement[]) =>

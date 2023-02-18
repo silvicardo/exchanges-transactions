@@ -7,16 +7,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node prisma/seed.ts",
     "parse": "ts-node -r dotenv/config commands/parse.ts",
-    "parse:yp" : "ts-node -r dotenv/config commands/yp.ts",
-    "parse:bitpanda" : "ts-node -r dotenv/config commands/bitpanda.ts",
-    "parse:bitpanda-pro" : "ts-node -r dotenv/config commands/bitpanda_pro.ts",
-    "parse:crypto-com-app" : "ts-node -r dotenv/config commands/crypto_com_app.ts",
-    "parse:nexo" : "ts-node -r dotenv/config commands/nexo.ts"
+    "unparse": "ts-node -r dotenv/config commands/unparse.ts",
+    "parse:yp": "ts-node -r dotenv/config commands/yp.ts",
+    "parse:bitpanda": "ts-node -r dotenv/config commands/bitpanda.ts",
+    "parse:bitpanda-pro": "ts-node -r dotenv/config commands/bitpanda_pro.ts",
+    "parse:crypto-com-app": "ts-node -r dotenv/config commands/crypto_com_app.ts",
+    "parse:nexo": "ts-node -r dotenv/config commands/nexo.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.18",
     "@types/papaparse": "^5.3.7",
     "dotenv": "^16.0.3",
@@ -28,6 +30,7 @@
   },
   "dependencies": {
     "@prisma/client": "^4.9.0",
+    "lodash": "^4.17.21",
     "papaparse": "^5.3.2"
   }
 }

@@ -1,9 +1,9 @@
-import { convertCSVtoJSON } from "../../../convertCSVtoJSON";
+import { convertCSVtoJSON } from "../../../../convertCSVtoJSON";
 import {
   Prisma,
   PrismaClient,
   CurrencyName,
-  CryptoComCardTransaction,
+  CryptoComFiatTransaction,
 } from "@prisma/client";
 
 type CsvInput = {
@@ -11,17 +11,17 @@ type CsvInput = {
   "Transaction Description": string;
   Currency: CurrencyName;
   Amount: number;
-  "To Currency"?: CurrencyName;
-  "To Amount"?: number;
+  "To Currency": CurrencyName;
+  "To Amount": number;
   "Native Currency": CurrencyName;
   "Native Amount": number;
   "Native Amount (in USD)": number;
-  "Transaction Kind"?: CryptoComCardTransaction;
+  "Transaction Kind": CryptoComFiatTransaction;
   "Transaction Hash"?: string;
 };
 
 type Parsed = Omit<
-  Prisma.CryptoComCardTransactionCreateInput,
+  Prisma.CryptoComFiatTransactionCreateInput,
   "id" | "userAccountId" | "originalData"
 > & {
   originalData: string;
@@ -70,7 +70,7 @@ const store = async ({
   Promise.all(
     parsed.map(async ({ originalData, ...trans }) => {
       console.log(
-        "Adding CryptoComApp card transaction > txn",
+        "Adding CryptoComApp fiat transaction > txn",
         `${trans.transactionKind} ${trans.transactionDescription}`
       );
       const timestampUtc = new Date(trans.timestampUtc).toISOString();
@@ -80,13 +80,13 @@ const store = async ({
         originalData: [originalData] as Prisma.JsonArray,
         userAccountId: userAccountId,
       };
-      const { id } = await prisma.cryptoComCardTransaction.upsert({
+      const { id } = await prisma.cryptoComFiatTransaction.upsert({
         where: { timestampUtc: timestampUtc },
         create: data,
         update: data,
       });
       console.log(
-        "Adding CryptoComApp card transaction > txn",
+        "Adding CryptoComApp fiat transaction > txn",
         `${trans.transactionKind} ${trans.transactionDescription} > id: ${id}`
       );
     })
@@ -102,7 +102,7 @@ export const handle = async ({
   prisma: PrismaClient;
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(
-    `${year}/CRYPTO_COM_APP/card_transactions.csv`
+    `${year}/CRYPTO_COM_APP/fiat_transactions.csv`
   );
   const parsed = csvJsonData.map(parse);
   return store({

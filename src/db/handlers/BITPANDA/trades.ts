@@ -4,7 +4,7 @@ import {
   BitpandaFeeCurrencyName,
   PrismaClient,
 } from "@prisma/client";
-import { convertCSVtoJSON } from "../../../convertCSVtoJSON";
+import { convertCSVtoJSON } from "../../../../convertCSVtoJSON";
 
 type CsvInput = {
   "Transaction ID": string;

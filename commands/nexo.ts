@@ -1,4 +1,4 @@
-import { handlers } from "../src/handlers/NEXO";
+import { handlers } from "../src/db/handlers/NEXO";
 import argv from "process.argv";
 import { PrismaClient } from "@prisma/client";
 

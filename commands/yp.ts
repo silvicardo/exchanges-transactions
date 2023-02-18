@@ -1,4 +1,4 @@
-import { handlers } from "../src/handlers/YOUNG_PLATFORM";
+import { handlers } from "../src/db/handlers/YOUNG_PLATFORM";
 import argv from "process.argv";
 import { PrismaClient } from "@prisma/client";
 

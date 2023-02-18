@@ -1,4 +1,4 @@
-import { handlers } from "../src/handlers/BITPANDA_PRO";
+import { handlers } from "../src/db/handlers/BITPANDA_PRO";
 import argv from "process.argv";
 import { PrismaClient } from "@prisma/client";
 

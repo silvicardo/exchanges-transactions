@@ -1,25 +1,22 @@
 import { Prisma, CurrencyName, PrismaClient } from "@prisma/client";
-import { convertCSVtoJSON } from "../../../convertCSVtoJSON";
+import { convertCSVtoJSON } from "../../../../convertCSVtoJSON";
 
 type CsvInput = {
-  "Order ID": string;
-  "Trade ID": string;
-  Type: "BUY" | "SELL";
-  Market: `${CurrencyName}_${CurrencyName}`;
+  "Transaction ID": string;
+  "External Transaction ID"?: string;
+  Type: "Deposit" | "Withdrawal";
+  "In/Out": "Incoming" | "Outgoing";
+  "Internal/External": "Internal" | "External";
   Amount: number;
-  "Amount Currency": CurrencyName;
-  Price: number;
-  "Price Currency": CurrencyName;
+  Currency: CurrencyName;
   Fee: number;
-  "Fee Currency": CurrencyName;
-  "Time (UTC)": string;
-  "BEST_EUR Rate"?: number;
+  "Time Created": string;
   "Account ID": string;
   "Account Name": string;
 };
 
 type Parsed = Omit<
-  Prisma.BitpandaProTradeCreateInput,
+  Prisma.BitpandaProDepositWithdrawCreateInput,
   "id" | "userAccountId" | "originalData"
 > & {
   originalData: string;
@@ -27,35 +24,29 @@ type Parsed = Omit<
 
 const parse = (input: CsvInput): Parsed => {
   const {
-    "Order ID": orderId,
-    "Trade ID": tradeId,
+    "Transaction ID": transactionId,
+    "External Transaction ID": externalTransactionId,
     Type: type,
-    Market: market,
+    "In/Out": inOut,
+    "Internal/External": internalExternal,
     Amount: amount,
-    "Amount Currency": amountCurrency,
-    Price: price,
-    "Price Currency": priceCurrency,
+    Currency: currency,
     Fee: fee,
-    "Fee Currency": feeCurrency,
-    "Time (UTC)": timeUtc,
-    "BEST_EUR Rate": bestEurRate,
+    "Time Created": timeCreated,
     "Account ID": accountId,
     "Account Name": accountName,
   } = input;
 
   return {
-    orderId,
-    tradeId,
+    transactionId,
+    externalTransactionId,
     type,
-    market,
+    inOut,
+    internalExternal,
     amount,
-    amountCurrency,
-    price,
-    priceCurrency,
+    currency,
     fee,
-    feeCurrency,
-    timeUtc,
-    bestEurRate,
+    timeCreated,
     accountId,
     accountName,
     originalData: JSON.stringify(input),
@@ -72,19 +63,25 @@ const store = async ({
   prisma: PrismaClient;
 }) =>
   Promise.all(
-    parsed.map(async ({ originalData, ...trade }) => {
-      console.log("adding Bitpanda PRO trade > orderId", trade.orderId);
+    parsed.map(async ({ originalData, ...depWith }) => {
+      console.log(
+        "adding Bitpanda PRO deposit withdraw > transactionId",
+        depWith.transactionId
+      );
       const data = {
-        ...trade,
+        ...depWith,
         originalData: [originalData] as Prisma.JsonArray,
         userAccountId: userAccountId,
       };
-      await prisma.bitpandaProTrade.upsert({
-        where: { orderId: trade.orderId },
+      await prisma.bitpandaProDepositWithdraw.upsert({
+        where: { transactionId: depWith.transactionId },
         create: data,
         update: data,
       });
-      console.log("added Bitpanda PRO trade > orderId", trade.orderId);
+      console.log(
+        "added Bitpanda PRO deposit withdraw > transactionId",
+        depWith.transactionId
+      );
     })
   );
 
@@ -98,7 +95,7 @@ export const handle = async ({
   prisma: PrismaClient;
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(
-    `${year}/BITPANDA_PRO/trades.csv`
+    `${year}/BITPANDA_PRO/deposit_withdraw.csv`
   );
   const parsed = csvJsonData.map(parse);
   console.log("parsed", parsed[0]);

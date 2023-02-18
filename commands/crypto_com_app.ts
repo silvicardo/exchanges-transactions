@@ -1,4 +1,4 @@
-import { handlers } from "../src/handlers/CRYPTO_COM_APP";
+import { handlers } from "../src/db/handlers/CRYPTO_COM_APP";
 import argv from "process.argv";
 import { PrismaClient } from "@prisma/client";
 

@@ -357,6 +357,7 @@ model CryptoComCardTransaction {
 enum CryptoComExchangeTransactionType {
  EXCHANGE
  SEND
+ RECEIVE
 }
 
 enum CryptoComExchangeTransactionTag {
@@ -365,10 +366,11 @@ enum CryptoComExchangeTransactionTag {
 }
 model CryptoComExchangeTransaction {
  id Int @id @default(autoincrement())
+ userAccountId Int
  transactionId String @unique
  source String
  category String
- transactionTime DateTime @unique
+ transactionTime DateTime
  transactionType CryptoComExchangeTransactionType
  receiveCurrency CurrencyName?
  receiveAmount Float?

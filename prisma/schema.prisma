@@ -354,6 +354,44 @@ model CryptoComCardTransaction {
  originalData Json
 }
 
+enum CryptoComExchangeTransactionType {
+ EXCHANGE
+ SEND
+}
+
+enum CryptoComExchangeTransactionTag {
+ UNCATEGORIZED
+ TRADE
+}
+model CryptoComExchangeTransaction {
+ id Int @id @default(autoincrement())
+ transactionId String @unique
+ source String
+ category String
+ transactionTime DateTime @unique
+ transactionType CryptoComExchangeTransactionType
+ receiveCurrency CurrencyName?
+ receiveAmount Float?
+ receiveWallet String?
+ receiveAddress String?
+ receiveTag CryptoComExchangeTransactionTag?
+ sendCurrency CurrencyName?
+ sendAmount Float?
+ sendWallet String?
+ sendAddress String?
+ sendTag CryptoComExchangeTransactionTag?
+ feeCurrency CurrencyName?
+ feeAmount Float?
+ comment String?
+ sendWorth Float
+ receiveWorth Float
+ feeWorth Float
+ receiveGain Float?
+ ignored Boolean @default(false)
+ transactionUrl String?
+ originalData Json
+}
+
 enum NexoTransactionType {
  Deposit
  LockingTermDeposit

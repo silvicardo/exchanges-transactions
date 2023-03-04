@@ -116,7 +116,3 @@ export const handle = async ({
     prisma,
   });
 };
-
-handle({ userAccountId: 197694, prisma: new PrismaClient() });
-
-console.log(jsonData.length);

@@ -314,6 +314,11 @@ enum CryptoComCryptoTransactionKind {
  referral_bonus
  lockup_lock
  reimbursement
+ lockup_unlock
+ admin_wallet_credited
+ crypto_wallet_swap_credited
+ crypto_wallet_swap_debited
+ supercharger_withdrawal
 }
 
 model CryptoComCryptoTransaction {

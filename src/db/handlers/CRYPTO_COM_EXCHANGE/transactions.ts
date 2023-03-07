@@ -66,6 +66,16 @@ const parse = (input: Input): Parsed => {
   });
 };
 
+function getUTCTime(dateTimeString: string): Date {
+  const dateTime = new Date(dateTimeString);
+  const dateTimeNumber = dateTime.getTime();
+  const dateTimeOffset = dateTime.getTimezoneOffset() * 60000;
+  const dateTimeUTC = new Date();
+  dateTimeUTC.setTime(dateTimeNumber - dateTimeOffset);
+
+  return dateTimeUTC;
+}
+
 const store = async ({
   parsed,
   userAccountId,
@@ -84,7 +94,7 @@ const store = async ({
 
       const data = {
         ...trans,
-        transactionTime: new Date(trans.transactionTime),
+        transactionTime: getUTCTime(trans.transactionTime as string),
         originalData: [originalData] as Prisma.JsonArray,
         userAccountId: userAccountId,
       };

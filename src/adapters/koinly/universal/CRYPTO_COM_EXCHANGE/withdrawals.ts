@@ -5,7 +5,7 @@ export const handle = (
   withdrawal: CryptoComExchangeTransaction
 ): KoinlyUniversal => {
   return {
-    Date: withdrawal.transactionTime.toISOString(),
+    Date: withdrawal.transactionTime as unknown as string,
     "Sent Amount": withdrawal.sendAmount!,
     "Sent Currency": withdrawal.sendCurrency!,
     "Received Amount": withdrawal.receiveAmount!,

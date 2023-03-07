@@ -81,10 +81,10 @@ const store = async ({
         "Adding Crypto Exchange transaction > txnId: ",
         `${trans.transactionId}}`
       );
-      const transactionTime = new Date(trans.transactionTime).toISOString();
+
       const data = {
         ...trans,
-        transactionTime,
+        transactionTime: new Date(trans.transactionTime),
         originalData: [originalData] as Prisma.JsonArray,
         userAccountId: userAccountId,
       };
@@ -116,3 +116,5 @@ export const handle = async ({
     prisma,
   });
 };
+
+handle({ userAccountId: 197694, prisma: new PrismaClient() });

@@ -5,7 +5,7 @@ export const handle = (
   deposit: CryptoComExchangeTransaction
 ): KoinlyUniversal => {
   return {
-    Date: deposit.transactionTime.toISOString(),
+    Date: deposit.transactionTime as unknown as string,
     "Sent Amount": 0,
     "Sent Currency": deposit.sendCurrency!,
     "Received Amount": deposit.receiveAmount!,

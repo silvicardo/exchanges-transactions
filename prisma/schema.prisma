@@ -314,6 +314,11 @@ enum CryptoComCryptoTransactionKind {
  referral_bonus
  lockup_lock
  reimbursement
+ lockup_unlock
+ admin_wallet_credited
+ crypto_wallet_swap_credited
+ crypto_wallet_swap_debited
+ supercharger_withdrawal
 }
 
 model CryptoComCryptoTransaction {
@@ -351,6 +356,46 @@ model CryptoComCardTransaction {
  nativeAmountInUsd Float
  transactionKind String?
  transactionHash String?
+ originalData Json
+}
+
+enum CryptoComExchangeTransactionType {
+ EXCHANGE
+ SEND
+ RECEIVE
+}
+
+enum CryptoComExchangeTransactionTag {
+ UNCATEGORIZED
+ TRADE
+}
+model CryptoComExchangeTransaction {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ transactionId String @unique
+ source String
+ category String
+ transactionTime DateTime
+ transactionType CryptoComExchangeTransactionType
+ receiveCurrency CurrencyName?
+ receiveAmount Float?
+ receiveWallet String?
+ receiveAddress String?
+ receiveTag CryptoComExchangeTransactionTag?
+ sendCurrency CurrencyName?
+ sendAmount Float?
+ sendWallet String?
+ sendAddress String?
+ sendTag CryptoComExchangeTransactionTag?
+ feeCurrency CurrencyName?
+ feeAmount Float?
+ comment String?
+ sendWorth Float
+ receiveWorth Float
+ feeWorth Float
+ receiveGain Float?
+ ignored Boolean @default(false)
+ transactionUrl String?
  originalData Json
 }
 

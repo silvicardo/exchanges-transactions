@@ -1,8 +1,12 @@
-import { PrismaClient, YoungPlatformMovement } from "@prisma/client";
+import {
+  PrismaClient,
+  PrismaPromise,
+  YoungPlatformMovement,
+} from "@prisma/client";
 
 export const getAll = (
   prisma: PrismaClient
-): Promise<YoungPlatformMovement[]> => {
+): PrismaPromise<YoungPlatformMovement[]> => {
   return prisma.youngPlatformMovement.findMany({
     where: {
       OR: [{ txType: "WITHDRAWAL" }, { txType: "FEE" }],

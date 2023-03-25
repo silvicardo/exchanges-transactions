@@ -1,6 +1,12 @@
-import { PrismaClient, YoungPlatformTrade } from "@prisma/client";
+import {
+  PrismaClient,
+  PrismaPromise,
+  YoungPlatformTrade,
+} from "@prisma/client";
 
-export const getAll = (prisma: PrismaClient): Promise<YoungPlatformTrade[]> => {
+export const getAll = (
+  prisma: PrismaClient
+): PrismaPromise<YoungPlatformTrade[]> => {
   return prisma.youngPlatformTrade.findMany({
     where: { side: "BUY" },
   });

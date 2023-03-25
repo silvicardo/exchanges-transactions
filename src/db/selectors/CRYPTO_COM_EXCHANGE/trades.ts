@@ -29,7 +29,7 @@ export type CryptoComExchangeTradeTransaction = Omit<
 
 export const getAll = (
   prisma: PrismaClient
-): Promise<CryptoComExchangeTradeTransaction[]> => {
+): PrismaPromise<CryptoComExchangeTradeTransaction[]> => {
   return prisma.cryptoComExchangeTransaction.findMany({
     where: { transactionType: "EXCHANGE" },
   }) as PrismaPromise<CryptoComExchangeTradeTransaction[]>;

@@ -11,3 +11,13 @@ export const getAll = (
     where: { txType: "DEPOSIT" },
   });
 };
+
+export const getAllFiat = (
+  prisma: PrismaClient
+): PrismaPromise<YoungPlatformMovement[]> => {
+  return prisma.youngPlatformMovement.findMany({
+    where: {
+      AND: [{ txType: "DEPOSIT" }, { currency: "EUR" }],
+    },
+  });
+};

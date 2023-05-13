@@ -5,11 +5,10 @@ import {
   PrismaPromise,
 } from "@prisma/client";
 import { queryUtils, QueryTimespan } from "../utils";
+import { TradeQueryConfig } from "../types";
 
-type Config = {
+type Config = Omit<TradeQueryConfig, "pair"> & {
   crypto: Exclude<CurrencyName, "EUR" | "USD" | "GBP"> | "*";
-  side: "buy" | "sell";
-  timestamp?: Partial<QueryTimespan>;
 };
 
 /*

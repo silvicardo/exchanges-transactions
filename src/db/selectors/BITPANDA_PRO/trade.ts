@@ -1,15 +1,8 @@
-import { CurrencyName, Prisma, PrismaClient } from "@prisma/client";
-import { QueryTimespan, queryUtils } from "../utils";
+import { PrismaClient } from "@prisma/client";
+import { PairQueryInput, TradeQueryConfig } from "../types";
+import { queryUtils } from "../utils";
 
-type PairQueryInput = CurrencyName | "*";
-
-type Config = {
-  pair: `${PairQueryInput}_${PairQueryInput}`;
-  side: "buy" | "sell";
-  timestamp?: Partial<QueryTimespan>;
-};
-
-export const getForPair = (prisma: PrismaClient, config: Config) => {
+export const getForPair = (prisma: PrismaClient, config: TradeQueryConfig) => {
   const { pair, side, timestamp } = config;
   const [base, quote] = pair.split("_") as [PairQueryInput, PairQueryInput];
   const assetParams = {
@@ -23,7 +16,7 @@ export const getForPair = (prisma: PrismaClient, config: Config) => {
 
   return prisma.bitpandaProTrade.findMany({
     where: {
-      type: side.toUpperCase() as Uppercase<Config["side"]>,
+      type: side.toUpperCase() as Uppercase<TradeQueryConfig["side"]>,
       ...assetParams,
       ...timestampQueryParam,
     },

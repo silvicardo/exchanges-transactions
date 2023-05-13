@@ -40,18 +40,33 @@ export const getSellToFiatOperations = async (
     })
   ).reduce((acc, curr) => acc + curr.amount, 0);
 
+  const cryptoComApp = (
+    await selectors.cryptoComApp.trade.getForPair(prisma, {
+      pair: `${crypto}_EUR`,
+      side: "sell",
+      timestamp,
+    })
+  ).reduce((acc, curr) => {
+    const amount = +!curr.toAmount;
+    if (Number.isNaN(amount)) {
+      throw new Error(`NaN crypto com app entry: ${JSON.stringify(curr)}`);
+    }
+    return acc + Math.abs(amount);
+  }, 0);
+
   return {
     config,
     account: {
       bitpanda,
       bitpandaPro,
       youngPlatform,
+      cryptoComApp,
     },
-    total: bitpanda + bitpandaPro + youngPlatform,
+    total: bitpanda + bitpandaPro + youngPlatform + cryptoComApp,
   };
 };
 // ts-node src/manager/trade/sell.ts
-const queryCurrencies = ["*", "BTC", "ETH", "USDT", "USDC"] as const;
+const queryCurrencies = ["*", "SAND", "BTC", "ETH", "USDT", "USDC"] as const;
 Promise.all(
   queryCurrencies.map((crypto) =>
     getSellToFiatOperations({

@@ -54,6 +54,17 @@ export const getSellToFiatOperations = async (
     return acc + Math.abs(amount);
   }, 0);
 
+  const cryptoComExchange = (
+    await selectors.cryptoComExchange.trades.getForPair(prisma, {
+      pair: `${crypto}_EUR`,
+      side: "sell",
+      timestamp,
+    })
+  ).reduce((acc, curr) => {
+    const amount = curr.receiveAmount ? Math.abs(curr.receiveAmount) : 0;
+    return acc + amount;
+  }, 0);
+
   const nexo = (
     await selectors.nexo.trade.getForPair(prisma, {
       pair: `${crypto}_EUR`,
@@ -72,9 +83,16 @@ export const getSellToFiatOperations = async (
       bitpandaPro,
       youngPlatform,
       cryptoComApp,
+      cryptoComExchange,
       nexo,
     },
-    total: bitpanda + bitpandaPro + youngPlatform + cryptoComApp + nexo,
+    total:
+      bitpanda +
+      bitpandaPro +
+      youngPlatform +
+      cryptoComApp +
+      nexo +
+      cryptoComExchange,
   };
 };
 // ts-node src/manager/trade/sell.ts

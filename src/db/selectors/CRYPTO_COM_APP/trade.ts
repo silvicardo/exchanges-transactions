@@ -83,11 +83,3 @@ export const getForPair = (prisma: PrismaClient, config: TradeQueryConfig) => {
     },
   });
 };
-
-/*
-getForPair(new PrismaClient(), {
-  pair: "BTC_*",
-  side: "buy",
-}).then((r) => console.log(r, r.length));
-
- */

@@ -1,14 +1,10 @@
-import {
-  BitpandaTrade,
-  CurrencyName,
-  PrismaClient,
-  PrismaPromise,
-} from "@prisma/client";
-import { queryUtils, QueryTimespan } from "../utils";
+import { BitpandaTrade, PrismaClient, PrismaPromise } from "@prisma/client";
+import { queryUtils } from "../utils";
 import { TradeQueryConfig } from "../types";
+import { CRYPTO_CURRENCIES } from "../../../constants";
 
 type Config = Omit<TradeQueryConfig, "pair"> & {
-  crypto: Exclude<CurrencyName, "EUR" | "USD" | "GBP"> | "*";
+  crypto: (typeof CRYPTO_CURRENCIES)[number] | "*";
 };
 
 /*

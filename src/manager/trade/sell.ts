@@ -1,4 +1,5 @@
 import { CurrencyName, PrismaClient } from "@prisma/client";
+import { CRYPTO_CURRENCIES } from "../../constants";
 import { database } from "../../db";
 import { QueryTimespan } from "../../db/selectors/utils";
 
@@ -96,15 +97,7 @@ export const getSellToFiatOperations = async (
   };
 };
 // ts-node src/manager/trade/sell.ts
-const queryCurrencies = [
-  "*",
-  "SAND",
-  "BTC",
-  "ETH",
-  "USDT",
-  "USDC",
-  "EURX",
-] as const;
+const queryCurrencies = ["*", ...CRYPTO_CURRENCIES] as const;
 Promise.all(
   queryCurrencies.map((crypto) =>
     getSellToFiatOperations({

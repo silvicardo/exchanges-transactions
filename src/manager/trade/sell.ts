@@ -2,9 +2,10 @@ import { CurrencyName, PrismaClient } from "@prisma/client";
 import { CRYPTO_CURRENCIES } from "../../constants";
 import { database } from "../../db";
 import { QueryTimespan } from "../../db/selectors/utils";
+import { CryptoCurrency } from "../../types";
 
 type SellToFiatConfig = {
-  crypto: Exclude<CurrencyName, "EUR" | "USD" | "GBP"> | "*";
+  crypto: CryptoCurrency | "*";
   timestamp?: Partial<QueryTimespan>;
 };
 export const getSellToFiatOperations = async (

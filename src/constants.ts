@@ -1,4 +1,6 @@
-export const CRYPTO_CURRENCIES = [
+import { CurrencyName } from "@prisma/client";
+
+export const CRYPTO_CURRENCIES: Exclude<CurrencyName, "EUR" | "USD">[] = [
   "BTC",
   "ETH",
   "SOL",
@@ -60,4 +62,4 @@ export const CRYPTO_CURRENCIES = [
   "LUNC",
   "NEAR",
   "UST",
-] as const;
+];

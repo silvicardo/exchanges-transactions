@@ -1,10 +1,10 @@
 import { BitpandaTrade, PrismaClient, PrismaPromise } from "@prisma/client";
 import { queryUtils } from "../utils";
 import { TradeQueryConfig } from "../types";
-import { CRYPTO_CURRENCIES } from "../../../constants";
+import { CryptoCurrency } from "../../../types";
 
 type Config = Omit<TradeQueryConfig, "pair"> & {
-  crypto: (typeof CRYPTO_CURRENCIES)[number] | "*";
+  crypto: CryptoCurrency | "*";
 };
 
 /*

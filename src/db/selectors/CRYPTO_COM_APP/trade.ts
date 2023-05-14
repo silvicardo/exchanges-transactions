@@ -25,19 +25,17 @@ export const getForPair = (prisma: PrismaClient, config: TradeQueryConfig) => {
     assetParams = {
       transactionDescription:
         side === "buy" ? `${quote} -> ${base}` : `${base} -> ${quote}`,
-      currency: side === "buy" ? quote : base,
-      toCurrency: side === "buy" ? base : quote,
     };
   }
 
-  if (base === "*" && quote !== "*") {
+  if (quote !== "*") {
     assetParams = {
       ...assetParams,
       [side === "buy" ? "currency" : "toCurrency"]: quote,
     };
   }
 
-  if (quote === "*" && base !== "*") {
+  if (base !== "*") {
     assetParams = {
       ...assetParams,
       [side === "buy" ? "toCurrency" : "currency"]: base,

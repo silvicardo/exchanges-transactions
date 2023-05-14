@@ -17,7 +17,7 @@ import { queryUtils } from "../utils";
  * in italy this results as advantage since crpyto to crpyto
  * is not a taxable event even though it is a trade
  */
-export const getTrade = async (
+export const getForPair = async (
   prisma: PrismaClient,
   config: TradeQueryConfig
 ) => {

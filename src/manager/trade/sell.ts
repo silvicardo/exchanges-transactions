@@ -55,7 +55,7 @@ export const getSellToFiatOperations = async (
   }, 0);
 
   const nexo = (
-    await selectors.nexo.trade.getTrade(prisma, {
+    await selectors.nexo.trade.getForPair(prisma, {
       pair: `${crypto}_EUR`,
       side: "sell",
       timestamp,

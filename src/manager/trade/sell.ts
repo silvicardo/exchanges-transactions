@@ -54,6 +54,17 @@ export const getSellToFiatOperations = async (
     return acc + Math.abs(amount);
   }, 0);
 
+  const nexo = (
+    await selectors.nexo.trade.getTrade(prisma, {
+      pair: `${crypto}_EUR`,
+      side: "sell",
+      timestamp,
+    })
+  ).reduce((acc, curr) => {
+    const amount = Math.abs(curr.outputAmount);
+    return acc + amount;
+  }, 0);
+
   return {
     config,
     account: {
@@ -61,12 +72,21 @@ export const getSellToFiatOperations = async (
       bitpandaPro,
       youngPlatform,
       cryptoComApp,
+      nexo,
     },
-    total: bitpanda + bitpandaPro + youngPlatform + cryptoComApp,
+    total: bitpanda + bitpandaPro + youngPlatform + cryptoComApp + nexo,
   };
 };
 // ts-node src/manager/trade/sell.ts
-const queryCurrencies = ["*", "SAND", "BTC", "ETH", "USDT", "USDC"] as const;
+const queryCurrencies = [
+  "*",
+  "SAND",
+  "BTC",
+  "ETH",
+  "USDT",
+  "USDC",
+  "EURX",
+] as const;
 Promise.all(
   queryCurrencies.map((crypto) =>
     getSellToFiatOperations({

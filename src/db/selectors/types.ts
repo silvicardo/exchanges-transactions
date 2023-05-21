@@ -10,6 +10,6 @@ export type TradeQueryConfig = {
 };
 
 export type DepositQueryConfig = {
-  currency: CurrencyName | "*";
+  currency: CurrencyName;
   timestamp?: Partial<QueryTimespan>;
 };

@@ -21,7 +21,7 @@ export const getFiatDepositOperationsTotal = async (
   ).reduce((acc, curr) => acc + curr.amountFiat - (curr.fee || 0), 0);
 
   const bitpandaPro = (
-    await database.selectors.bitpandaPro.deposits.getAllFiat(prisma)
+    await database.selectors.bitpandaPro.deposits.getFiat(prisma, { timestamp })
   ).reduce((acc, curr) => acc + curr.amount - curr.fee, 0);
 
   const nexo = (

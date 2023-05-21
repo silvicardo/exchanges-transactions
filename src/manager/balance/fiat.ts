@@ -25,7 +25,7 @@ export const getFiatDepositOperationsTotal = async (
   ).reduce((acc, curr) => acc + curr.amount - curr.fee, 0);
 
   const nexo = (
-    await database.selectors.nexo.deposits.getAllFiat(prisma)
+    await database.selectors.nexo.deposits.getAllFiat(prisma, { timestamp })
   ).reduce((acc, curr) => acc + curr.inputAmount, 0);
 
   const cryptoComApp = (

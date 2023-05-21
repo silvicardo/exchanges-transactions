@@ -16,6 +16,7 @@ export const getAllByCurrency = (
     where: {
       type: "Deposit",
       inOut: "Incoming",
+      internalExternal: "External",
       currency: currency,
       ...(timestamp
         ? { timeCreated: queryUtils.getTimespanQueryObject(timestamp) }

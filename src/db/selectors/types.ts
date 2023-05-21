@@ -8,3 +8,8 @@ export type TradeQueryConfig = {
   side: "buy" | "sell";
   timestamp?: Partial<QueryTimespan>;
 };
+
+export type DepositQueryConfig = {
+  currency: CurrencyName | "*";
+  timestamp?: Partial<QueryTimespan>;
+};

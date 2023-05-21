@@ -1,9 +1,6 @@
-import {
-  PrismaClient,
-  BitpandaTrade,
-  Prisma,
-  PrismaPromise,
-} from "@prisma/client";
+import { PrismaClient, BitpandaTrade, PrismaPromise } from "@prisma/client";
+import { DepositQueryConfig } from "../types";
+import { queryUtils } from "../utils";
 
 export const getAll = (
   prisma: PrismaClient
@@ -17,15 +14,17 @@ export const getAll = (
  * it's harcoded here
  */
 export const getFiat = (
-  prisma: PrismaClient
+  prisma: PrismaClient,
+  { timestamp }: Omit<DepositQueryConfig, "currency">
 ): PrismaPromise<BitpandaTrade[]> => {
   return prisma.bitpandaTrade.findMany({
     where: {
-      AND: [
-        { transactionType: "deposit" },
-        { assetClass: "Fiat" },
-        { fiat: "EUR" },
-      ],
+      transactionType: "deposit",
+      assetClass: "Fiat",
+      fiat: "EUR",
+      ...(timestamp
+        ? { timestamp: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
     },
   });
 };

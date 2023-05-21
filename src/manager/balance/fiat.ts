@@ -1,14 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 import { database } from "../../db";
+import { QueryTimespan } from "../../db/selectors/utils";
 
-export const getFiatDepositOperationsTotal = async (): Promise<{
+type FiatDepositConfig = {
+  timestamp?: Partial<QueryTimespan>;
+};
+
+export const getFiatDepositOperationsTotal = async (
+  config: FiatDepositConfig
+): Promise<{
   account: Record<string, number>;
   total: number;
+  config: FiatDepositConfig;
 }> => {
+  const { timestamp } = config;
   const prisma = new PrismaClient();
 
   const bitpanda = (
-    await database.selectors.bitpanda.deposits.getAll(prisma)
+    await database.selectors.bitpanda.deposits.getFiat(prisma, { timestamp })
   ).reduce((acc, curr) => acc + curr.amountFiat - (curr.fee || 0), 0);
 
   const bitpandaPro = (
@@ -36,7 +45,10 @@ export const getFiatDepositOperationsTotal = async (): Promise<{
       youngPlatform,
     },
     total: bitpanda + bitpandaPro + nexo + cryptoComApp + youngPlatform,
+    config,
   };
 };
 
-getFiatDepositOperationsTotal().then(console.log);
+getFiatDepositOperationsTotal({
+  timestamp: { gte: "2022-01-01", lte: "2022-12-31" },
+}).then(console.log);

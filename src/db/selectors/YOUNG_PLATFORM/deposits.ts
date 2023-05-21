@@ -3,6 +3,8 @@ import {
   PrismaPromise,
   YoungPlatformMovement,
 } from "@prisma/client";
+import { DepositQueryConfig } from "../types";
+import { queryUtils } from "../utils";
 
 export const getAll = (
   prisma: PrismaClient
@@ -13,11 +15,16 @@ export const getAll = (
 };
 
 export const getAllFiat = (
-  prisma: PrismaClient
+  prisma: PrismaClient,
+  { timestamp }: Pick<DepositQueryConfig, "timestamp">
 ): PrismaPromise<YoungPlatformMovement[]> => {
   return prisma.youngPlatformMovement.findMany({
     where: {
-      AND: [{ txType: "DEPOSIT" }, { currency: "EUR" }],
+      txType: "DEPOSIT",
+      currency: "EUR",
+      ...(timestamp
+        ? { date: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
     },
   });
 };

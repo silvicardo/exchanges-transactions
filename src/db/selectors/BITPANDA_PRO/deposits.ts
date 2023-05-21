@@ -4,22 +4,40 @@ import {
   CurrencyName,
   PrismaPromise,
 } from "@prisma/client";
+import { DepositQueryConfig } from "../types";
+import { queryUtils } from "../utils";
 
 export const getAllByCurrency = (
   prisma: PrismaClient,
-  currency: CurrencyName
+  { currency, timestamp }: DepositQueryConfig
 ): PrismaPromise<BitpandaProDepositWithdraw[]> => {
   return prisma.bitpandaProDepositWithdraw.findMany({
+    // @ts-expect-error
     where: {
-      AND: [{ type: "Deposit" }, { inOut: "Incoming" }, { currency: currency }],
+      type: "Deposit",
+      inOut: "Incoming",
+      currency: currency,
+      ...(timestamp
+        ? { timeCreated: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
     },
   });
 };
 
 export const getAllFiat = (prisma: PrismaClient) =>
-  getAllByCurrency(prisma, "EUR");
+  getAllByCurrency(prisma, { currency: "EUR" });
 
-export const getAllByCrypto = (
+export const getFiat = (
   prisma: PrismaClient,
-  currency: Exclude<CurrencyName, "USD" | "EUR">
-) => getAllByCurrency(prisma, currency);
+  { timestamp }: Pick<DepositQueryConfig, "timestamp">
+) => getAllByCurrency(prisma, { currency: "EUR", timestamp });
+
+export const getByCrypto = (
+  prisma: PrismaClient,
+  {
+    currency,
+    timestamp,
+  }: {
+    currency: Exclude<CurrencyName, "USD" | "EUR">;
+  } & Pick<DepositQueryConfig, "timestamp">
+) => getAllByCurrency(prisma, { currency, timestamp });

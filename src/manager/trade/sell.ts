@@ -49,7 +49,7 @@ export const getSellToFiatOperations = async (
       timestamp,
     })
   ).reduce((acc, curr) => {
-    const amount = +!curr.toAmount;
+    const amount = +curr.toAmount!;
     if (Number.isNaN(amount)) {
       throw new Error(`NaN crypto com app entry: ${JSON.stringify(curr)}`);
     }

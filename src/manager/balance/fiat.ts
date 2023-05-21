@@ -35,7 +35,9 @@ export const getFiatDepositOperationsTotal = async (
   ).reduce((acc, curr) => acc + curr.toAmount, 0);
 
   const youngPlatform = (
-    await database.selectors.youngPlatform.deposits.getAllFiat(prisma)
+    await database.selectors.youngPlatform.deposits.getAllFiat(prisma, {
+      timestamp,
+    })
   ).reduce((acc, curr) => acc + curr.credit, 0);
 
   return {

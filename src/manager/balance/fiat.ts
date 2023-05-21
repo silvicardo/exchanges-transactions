@@ -29,7 +29,9 @@ export const getFiatDepositOperationsTotal = async (
   ).reduce((acc, curr) => acc + curr.inputAmount, 0);
 
   const cryptoComApp = (
-    await database.selectors.cryptoComApp.deposits.getAllFiat(prisma)
+    await database.selectors.cryptoComApp.deposits.getAllFiat(prisma, {
+      timestamp,
+    })
   ).reduce((acc, curr) => acc + curr.toAmount, 0);
 
   const youngPlatform = (

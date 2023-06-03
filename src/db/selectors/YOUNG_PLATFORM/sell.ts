@@ -1,10 +1,19 @@
 import { PrismaPromise, YoungPlatformTrade } from "@prisma/client";
 import { PairQueryInput, TradeQueryConfig } from "../types";
-import { queryUtils } from "../utils";
+import { QueryTimespan, queryUtils } from "../utils";
 import prisma from "../../../../client";
-export const getAll = (): PrismaPromise<YoungPlatformTrade[]> => {
+export const getAll = ({
+  timestamp,
+}: Partial<{
+  timestamp: Partial<QueryTimespan>;
+}> = {}): PrismaPromise<YoungPlatformTrade[]> => {
   return prisma.youngPlatformTrade.findMany({
-    where: { side: "SELL" },
+    where: {
+      side: "SELL",
+      ...(timestamp
+        ? { date: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
+    },
   });
 };
 export const getForPair = (

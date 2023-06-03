@@ -25,8 +25,6 @@ export const getAllByCurrency = ({
   });
 };
 
-export const getAllFiat = () => getAllByCurrency({ currency: "EUR" });
-
 export const getFiat = ({ timestamp }: Pick<DepositQueryConfig, "timestamp">) =>
   getAllByCurrency({ currency: "EUR", timestamp });
 

@@ -1,5 +1,4 @@
 import {
-  PrismaClient,
   CryptoComFiatTransaction,
   CryptoComCryptoTransaction,
   CurrencyName,
@@ -7,11 +6,13 @@ import {
 } from "@prisma/client";
 import { DepositQueryConfig } from "../types";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
-export const getAllFiat = (
-  prisma: PrismaClient,
-  { timestamp }: Pick<DepositQueryConfig, "timestamp">
-): PrismaPromise<CryptoComFiatTransaction[]> => {
+export const getAllFiat = ({
+  timestamp,
+}: Pick<DepositQueryConfig, "timestamp">): PrismaPromise<
+  CryptoComFiatTransaction[]
+> => {
   return prisma.cryptoComFiatTransaction.findMany({
     where: {
       transactionKind: { in: ["viban_card_top_up", "viban_deposit"] },
@@ -25,15 +26,14 @@ export const getAllFiat = (
   });
 };
 
-export const getAllByCrypto = (
-  prisma: PrismaClient,
-  {
-    currency,
-    timestamp,
-  }: {
-    currency: Exclude<CurrencyName, "USD" | "EUR">;
-  } & Pick<DepositQueryConfig, "timestamp">
-): PrismaPromise<CryptoComCryptoTransaction[]> => {
+export const getAllByCrypto = ({
+  currency,
+  timestamp,
+}: {
+  currency: Exclude<CurrencyName, "USD" | "EUR">;
+} & Pick<DepositQueryConfig, "timestamp">): PrismaPromise<
+  CryptoComCryptoTransaction[]
+> => {
   {
     return prisma.cryptoComCryptoTransaction.findMany({
       where: {

@@ -5,25 +5,23 @@ import { handle as handleAdmin } from "./admin";
 import { handle as handleGift } from "./gift";
 import { handle as handleTradeBuy } from "./trade_buy";
 import { handle as handleTradeSell } from "./trade_sell";
-import { PrismaClient } from "@prisma/client";
 import { database } from "../../../../db";
 import { orderBy } from "lodash";
 import { convertJSONtoCSV } from "../../../../../convertJSONtoCSV";
 
 export const handle = async () => {
-  const prisma = new PrismaClient();
   const selectors = database.selectors.youngPlatform;
-  const dbWithdrawals = await selectors.withdrawals.getAll(prisma);
-  const dbDeposits = await selectors.deposits.getAll(prisma);
+  const dbWithdrawals = await selectors.withdrawals.getAll();
+  const dbDeposits = await selectors.deposits.getAll();
 
-  const dbBuyTrades = await selectors.buy.getAll(prisma);
+  const dbBuyTrades = await selectors.buy.getAll();
 
-  const dbSellTrades = await selectors.sell.getAll(prisma);
+  const dbSellTrades = await selectors.sell.getAll();
 
-  const dbGiftsMovements = await selectors.gift.getAll(prisma);
-  const dbStakingMovements = await selectors.staking.getAll(prisma);
+  const dbGiftsMovements = await selectors.gift.getAll();
+  const dbStakingMovements = await selectors.staking.getAll();
 
-  const dbAdminMovements = await selectors.admin.getAll(prisma);
+  const dbAdminMovements = await selectors.admin.getAll();
 
   const entries = [
     ...handleWithdrawals(dbWithdrawals),

@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { database } from "../../../../db";
 import { handle as handleTrade } from "./trades";
 import { handle as handleDeposit } from "./deposits";
@@ -7,16 +6,10 @@ import { orderBy } from "lodash";
 import { convertJSONtoCSV } from "../../../../../convertJSONtoCSV";
 
 export const handle = async () => {
-  const prisma = new PrismaClient();
-
-  const trades = await database.selectors.cryptoComExchange.trades.getAll(
-    prisma
-  );
-  const deposits = await database.selectors.cryptoComExchange.deposits.getAll(
-    prisma
-  );
+  const trades = await database.selectors.cryptoComExchange.trades.getAll();
+  const deposits = await database.selectors.cryptoComExchange.deposits.getAll();
   const withdrawals =
-    await database.selectors.cryptoComExchange.withdrawals.getAll(prisma);
+    await database.selectors.cryptoComExchange.withdrawals.getAll();
 
   const entries = [
     ...trades.map(handleTrade),

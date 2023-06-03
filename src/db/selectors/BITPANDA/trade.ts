@@ -1,7 +1,8 @@
-import { BitpandaTrade, PrismaClient, PrismaPromise } from "@prisma/client";
+import { BitpandaTrade, PrismaPromise } from "@prisma/client";
 import { queryUtils } from "../utils";
 import { TradeQueryConfig } from "../types";
 import { CryptoCurrency } from "../../../types";
+import prisma from "../../../../client";
 
 type Config = Omit<TradeQueryConfig, "pair"> & {
   crypto: CryptoCurrency | "*";
@@ -11,10 +12,11 @@ type Config = Omit<TradeQueryConfig, "pair"> & {
  * Bitpanda support only fiat EUR from and to ops
  * so one of the sides will always be EUR
  */
-export const getForFiatPair = (
-  prisma: PrismaClient,
-  { crypto, side, timestamp }: Config
-): PrismaPromise<BitpandaTrade[]> => {
+export const getForFiatPair = ({
+  crypto,
+  side,
+  timestamp,
+}: Config): PrismaPromise<BitpandaTrade[]> => {
   const assetQueryParam = crypto === "*" ? {} : { asset: crypto };
   const timestampQueryParam = !timestamp
     ? {}

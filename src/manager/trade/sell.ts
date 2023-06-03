@@ -1,4 +1,3 @@
-import { CurrencyName, PrismaClient } from "@prisma/client";
 import { CRYPTO_CURRENCIES } from "../../constants";
 import { database } from "../../db";
 import { QueryTimespan } from "../../db/selectors/utils";
@@ -16,11 +15,10 @@ export const getSellToFiatOperations = async (
   config: SellToFiatConfig;
 }> => {
   const { crypto, timestamp } = config;
-  const prisma = new PrismaClient();
   const { selectors } = database;
 
   const bitpanda = (
-    await selectors.bitpanda.trade.getForFiatPair(prisma, {
+    await selectors.bitpanda.trade.getForFiatPair({
       crypto: crypto,
       side: "sell",
       timestamp,
@@ -28,7 +26,7 @@ export const getSellToFiatOperations = async (
   ).reduce((acc, curr) => acc + curr.amountFiat, 0);
 
   const bitpandaPro = (
-    await selectors.bitpandaPro.trade.getForPair(prisma, {
+    await selectors.bitpandaPro.trade.getForPair({
       pair: `${crypto}_EUR`,
       side: "sell",
       timestamp,
@@ -36,14 +34,14 @@ export const getSellToFiatOperations = async (
   ).reduce((acc, curr) => acc + curr.price, 0);
 
   const youngPlatform = (
-    await selectors.youngPlatform.sell.getForPair(prisma, {
+    await selectors.youngPlatform.sell.getForPair({
       pair: `${crypto}_EUR`,
       timestamp,
     })
   ).reduce((acc, curr) => acc + curr.amount, 0);
 
   const cryptoComApp = (
-    await selectors.cryptoComApp.trade.getForPair(prisma, {
+    await selectors.cryptoComApp.trade.getForPair({
       pair: `${crypto}_EUR`,
       side: "sell",
       timestamp,
@@ -57,7 +55,7 @@ export const getSellToFiatOperations = async (
   }, 0);
 
   const cryptoComExchange = (
-    await selectors.cryptoComExchange.trades.getForPair(prisma, {
+    await selectors.cryptoComExchange.trades.getForPair({
       pair: `${crypto}_EUR`,
       side: "sell",
       timestamp,
@@ -68,7 +66,7 @@ export const getSellToFiatOperations = async (
   }, 0);
 
   const nexo = (
-    await selectors.nexo.trade.getForPair(prisma, {
+    await selectors.nexo.trade.getForPair({
       pair: `${crypto}_EUR`,
       side: "sell",
       timestamp,

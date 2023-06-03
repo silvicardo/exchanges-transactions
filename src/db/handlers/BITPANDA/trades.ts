@@ -1,10 +1,6 @@
-import {
-  Prisma,
-  CurrencyName,
-  BitpandaFeeCurrencyName,
-  PrismaClient,
-} from "@prisma/client";
+import { Prisma, CurrencyName, BitpandaFeeCurrencyName } from "@prisma/client";
 import { convertCSVtoJSON } from "../../../../convertCSVtoJSON";
+import prisma from "../../../../client";
 
 type CsvInput = {
   "Transaction ID": string;
@@ -77,11 +73,9 @@ const parse = (input: CsvInput): Parsed => {
 const store = async ({
   parsed,
   userAccountId,
-  prisma,
 }: {
   parsed: Parsed[];
   userAccountId: number;
-  prisma: PrismaClient;
 }) =>
   Promise.all(
     parsed.map(async ({ originalData, ...trade }) => {
@@ -100,13 +94,7 @@ const store = async ({
     })
   );
 
-export const handle = async ({
-  userAccountId,
-  prisma,
-}: {
-  userAccountId: number;
-  prisma: PrismaClient;
-}) => {
+export const handle = async ({ userAccountId }: { userAccountId: number }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(
     `2021/BITPANDA/trades.csv`
   );
@@ -115,6 +103,5 @@ export const handle = async ({
   return store({
     parsed,
     userAccountId,
-    prisma,
   });
 };

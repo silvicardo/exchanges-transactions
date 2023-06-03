@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import { PairQueryInput, TradeQueryConfig } from "../types";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
-export const getForPair = (prisma: PrismaClient, config: TradeQueryConfig) => {
+export const getForPair = (config: TradeQueryConfig) => {
   const { pair, side, timestamp } = config;
   const [base, quote] = pair.split("_") as [PairQueryInput, PairQueryInput];
   const assetParams = {

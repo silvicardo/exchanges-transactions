@@ -2,12 +2,13 @@
 import jsonData from "../../../../jsons/CRYPTO_COM_EXCHANGE/transactions.json";
 import {
   Prisma,
-  PrismaClient,
   CurrencyName,
   CryptoComExchangeTransactionType,
   CryptoComExchangeTransactionTag,
 } from "@prisma/client";
 import { omit } from "lodash";
+import prisma from "../../../../client";
+
 type PossiblyEmpty<T> = T | null | undefined;
 
 type TransactionWarning = {
@@ -79,11 +80,9 @@ function getUTCTime(dateTimeString: string): Date {
 const store = async ({
   parsed,
   userAccountId,
-  prisma,
 }: {
   parsed: Parsed[];
   userAccountId: number;
-  prisma: PrismaClient;
 }) =>
   Promise.all(
     parsed.map(async ({ originalData, ...trans }) => {
@@ -110,21 +109,12 @@ const store = async ({
     })
   );
 
-export const handle = async ({
-  userAccountId,
-  prisma,
-}: {
-  userAccountId: number;
-  prisma: PrismaClient;
-}) => {
+export const handle = async ({ userAccountId }: { userAccountId: number }) => {
   const originalData = jsonData as Input[];
 
   const parsed = originalData.map(parse);
   return store({
     parsed,
     userAccountId,
-    prisma,
   });
 };
-
-handle({ userAccountId: 197694, prisma: new PrismaClient() });

@@ -1,19 +1,13 @@
-import {
-  PrismaClient,
-  PrismaPromise,
-  YoungPlatformTrade,
-} from "@prisma/client";
+import { PrismaPromise, YoungPlatformTrade } from "@prisma/client";
 import { PairQueryInput, TradeQueryConfig } from "../types";
 import { queryUtils } from "../utils";
-export const getAll = (
-  prisma: PrismaClient
-): PrismaPromise<YoungPlatformTrade[]> => {
+import prisma from "../../../../client";
+export const getAll = (): PrismaPromise<YoungPlatformTrade[]> => {
   return prisma.youngPlatformTrade.findMany({
     where: { side: "SELL" },
   });
 };
 export const getForPair = (
-  prisma: PrismaClient,
   config: Omit<TradeQueryConfig, "side">
 ): PrismaPromise<YoungPlatformTrade[]> => {
   const { pair, timestamp } = config;

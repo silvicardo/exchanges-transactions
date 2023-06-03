@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { database } from "../../db";
 
 /*
@@ -10,7 +9,6 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
   account: Record<string, number>;
   total: number;
 }> => {
-  const prisma = new PrismaClient();
   /*
    * Bitpanda support only fiat EUR withdrawals
    * and they can be done in two ways:
@@ -18,7 +16,7 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
    * - bank withdrawal
    */
   const bitpanda = (
-    await database.selectors.bitpanda.withdrawals.getFiat(prisma)
+    await database.selectors.bitpanda.withdrawals.getFiat()
   ).reduce((acc, curr) => acc + curr.amountFiat, 0);
   /*
    * Bitpanda Pro doesn't support fiat withdrawals
@@ -41,7 +39,7 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
    * being transferred to the card, this does not calculate this
    */
   const cryptoComApp = (
-    await database.selectors.cryptoComApp.withdrawals.getAllFiat(prisma)
+    await database.selectors.cryptoComApp.withdrawals.getAllFiat()
   ).reduce((acc, curr) => acc + curr.amount, 0);
 
   /*
@@ -51,7 +49,7 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
   const cryptoComExchange = 0;
 
   const youngPlatform = (
-    await database.selectors.youngPlatform.withdrawals.getAllFiat(prisma)
+    await database.selectors.youngPlatform.withdrawals.getAllFiat()
   ).reduce((acc, curr) => acc + curr.credit, 0);
 
   return {

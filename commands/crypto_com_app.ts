@@ -1,6 +1,6 @@
 import { handlers } from "../src/db/handlers/CRYPTO_COM_APP";
 import argv from "process.argv";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../client";
 
 const processArgv = argv(process.argv.slice(2));
 
@@ -15,15 +15,12 @@ const { year, type, account_id } = processArgv<Config>({
   account_id: 123456,
 });
 
-const prisma = new PrismaClient();
-
 if (
   ["2021", "2022", "2023"].includes(year) &&
   ["fiat", "card", "crypto"].includes(type) &&
   account_id !== 123456
 ) {
   handlers[`${type}_transactions`]({
-    prisma,
     year,
     userAccountId: +account_id,
   })

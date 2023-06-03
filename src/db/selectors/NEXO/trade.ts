@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { PairQueryInput, TradeQueryConfig } from "../types";
 import { trim } from "lodash";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
 /*
  * Nexo actually never trades crypto -> fiat but only:
@@ -17,10 +17,7 @@ import { queryUtils } from "../utils";
  * in italy this results as advantage since crpyto to crpyto
  * is not a taxable event even though it is a trade
  */
-export const getForPair = async (
-  prisma: PrismaClient,
-  config: TradeQueryConfig
-) => {
+export const getForPair = async (config: TradeQueryConfig) => {
   const { pair, side, timestamp } = config;
   const [base, quote] = trim(pair).split("_") as [
     PairQueryInput,

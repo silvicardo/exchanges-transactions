@@ -1,11 +1,8 @@
-import {
-  PrismaClient,
-  PrismaPromise,
-  CryptoComExchangeTransaction,
-} from "@prisma/client";
+import { PrismaPromise, CryptoComExchangeTransaction } from "@prisma/client";
 import { PairQueryInput, TradeQueryConfig } from "../types";
 import { trim } from "lodash";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
 type RequiredPick<T extends keyof CryptoComExchangeTransaction> = Record<
   T,
@@ -30,15 +27,15 @@ export type CryptoComExchangeTradeTransaction = Omit<
   RequiredPick<"feeAmount"> &
   RequiredPick<"feeCurrency">;
 
-export const getAll = (
-  prisma: PrismaClient
-): PrismaPromise<CryptoComExchangeTradeTransaction[]> => {
+export const getAll = (): PrismaPromise<
+  CryptoComExchangeTradeTransaction[]
+> => {
   return prisma.cryptoComExchangeTransaction.findMany({
     where: { transactionType: "EXCHANGE" },
   }) as PrismaPromise<CryptoComExchangeTradeTransaction[]>;
 };
 
-export const getForPair = (prisma: PrismaClient, config: TradeQueryConfig) => {
+export const getForPair = (config: TradeQueryConfig) => {
   const { pair, side, timestamp } = config;
   const [base, quote] = trim(pair).split("_") as [
     PairQueryInput,

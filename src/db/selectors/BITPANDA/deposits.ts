@@ -3,9 +3,18 @@ import { DepositQueryConfig } from "../types";
 import { queryUtils } from "../utils";
 import prisma from "../../../../client";
 
-export const getAll = (): PrismaPromise<BitpandaTrade[]> => {
+export const getAll = ({
+  timestamp,
+}: Omit<DepositQueryConfig, "currency"> = {}): PrismaPromise<
+  BitpandaTrade[]
+> => {
   return prisma.bitpandaTrade.findMany({
-    where: { transactionType: "deposit" },
+    where: {
+      transactionType: "deposit",
+      ...(timestamp
+        ? { timestamp: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
+    },
   });
 };
 /*
@@ -14,7 +23,9 @@ export const getAll = (): PrismaPromise<BitpandaTrade[]> => {
  */
 export const getFiat = ({
   timestamp,
-}: Omit<DepositQueryConfig, "currency">): PrismaPromise<BitpandaTrade[]> => {
+}: Omit<DepositQueryConfig, "currency"> = {}): PrismaPromise<
+  BitpandaTrade[]
+> => {
   return prisma.bitpandaTrade.findMany({
     where: {
       transactionType: "deposit",

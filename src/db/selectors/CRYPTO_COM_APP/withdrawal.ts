@@ -1,31 +1,18 @@
 import prisma from "../../../../client";
+import { QueryTimespan, queryUtils } from "../utils";
 
-export const getAllFiat = (
-  options?: Partial<{
-    timestampUtc: Partial<{
-      gte: Date;
-      lte: Date;
-    }>;
-  }>
-) => {
+export const getAllFiat = ({
+  timestamp,
+}: Partial<{
+  timestamp: Partial<QueryTimespan>;
+}> = {}) => {
   return prisma.cryptoComFiatTransaction.findMany({
     where: {
-      AND: [
-        { currency: "EUR" },
-        {
-          transactionKind: "viban_card_top_up",
-        },
-        {
-          timestampUtc: {
-            gte: new Date(
-              options?.timestampUtc?.gte ?? "2021-01-01"
-            ).toISOString(),
-            lte: new Date(
-              options?.timestampUtc?.lte ?? "2022-12-31"
-            ).toISOString(),
-          },
-        },
-      ],
+      currency: "EUR",
+      transactionKind: "viban_card_top_up",
+      ...(timestamp
+        ? { timestampUtc: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
     },
     orderBy: { timestampUtc: "asc" },
   });

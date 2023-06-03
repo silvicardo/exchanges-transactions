@@ -1,10 +1,9 @@
-import { PrismaClient, BitpandaTrade, PrismaPromise } from "@prisma/client";
+import { BitpandaTrade, PrismaPromise } from "@prisma/client";
 import { DepositQueryConfig } from "../types";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
-export const getAll = (
-  prisma: PrismaClient
-): PrismaPromise<BitpandaTrade[]> => {
+export const getAll = (): PrismaPromise<BitpandaTrade[]> => {
   return prisma.bitpandaTrade.findMany({
     where: { transactionType: "deposit" },
   });
@@ -13,10 +12,9 @@ export const getAll = (
  * Bitpanda support only fiat EUR deposits so
  * it's harcoded here
  */
-export const getFiat = (
-  prisma: PrismaClient,
-  { timestamp }: Omit<DepositQueryConfig, "currency">
-): PrismaPromise<BitpandaTrade[]> => {
+export const getFiat = ({
+  timestamp,
+}: Omit<DepositQueryConfig, "currency">): PrismaPromise<BitpandaTrade[]> => {
   return prisma.bitpandaTrade.findMany({
     where: {
       transactionType: "deposit",

@@ -1,11 +1,11 @@
-import { PrismaClient, BitpandaTrade, PrismaPromise } from "@prisma/client";
+import { BitpandaTrade, PrismaPromise } from "@prisma/client";
+import prisma from "../../../../client";
 
 /*
  * Bitpanda support only fiat EUR deposits so
  * it's harcoded here
  */
 export const getFiat = (
-  prisma: PrismaClient,
   options?: Partial<{
     timestamp: Partial<{
       gte: Date;

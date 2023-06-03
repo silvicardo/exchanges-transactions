@@ -1,23 +1,19 @@
-import {
-  PrismaClient,
-  PrismaPromise,
-  YoungPlatformMovement,
-} from "@prisma/client";
+import { PrismaPromise, YoungPlatformMovement } from "@prisma/client";
 import { DepositQueryConfig } from "../types";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
-export const getAll = (
-  prisma: PrismaClient
-): PrismaPromise<YoungPlatformMovement[]> => {
+export const getAll = (): PrismaPromise<YoungPlatformMovement[]> => {
   return prisma.youngPlatformMovement.findMany({
     where: { txType: "DEPOSIT" },
   });
 };
 
-export const getAllFiat = (
-  prisma: PrismaClient,
-  { timestamp }: Pick<DepositQueryConfig, "timestamp">
-): PrismaPromise<YoungPlatformMovement[]> => {
+export const getAllFiat = ({
+  timestamp,
+}: Pick<DepositQueryConfig, "timestamp">): PrismaPromise<
+  YoungPlatformMovement[]
+> => {
   return prisma.youngPlatformMovement.findMany({
     where: {
       txType: "DEPOSIT",

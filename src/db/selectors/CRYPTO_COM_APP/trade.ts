@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { trim } from "lodash";
 import { PairQueryInput, TradeQueryConfig } from "../types";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
 /*
  * Queries for both fiat <-> crypto
@@ -14,7 +14,7 @@ import { queryUtils } from "../utils";
  * crypto to crypto can be
  * - crypto_exchange
  */
-export const getForPair = (prisma: PrismaClient, config: TradeQueryConfig) => {
+export const getForPair = (config: TradeQueryConfig) => {
   const { pair, side, timestamp } = config;
   const [base, quote] = trim(pair).split("_") as [
     PairQueryInput,

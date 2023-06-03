@@ -1,5 +1,4 @@
 import argv from "process.argv";
-import { convertCSVtoJSON } from "../convertCSVtoJSON";
 import fs from "fs";
 import { convertJSONtoCSV } from "../convertJSONtoCSV";
 

@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { seedUsers } from "./seedUsers";
+import prisma from "../client";
 
-const prisma = new PrismaClient();
 async function createCurrencies() {
   await prisma.currency.createMany({
     data: (["EUR"] as const).map((c) => ({
@@ -98,7 +97,7 @@ async function createExchanges() {
 async function main() {
   await createCurrencies();
   await createExchanges();
-  await seedUsers(prisma);
+  await seedUsers();
 }
 
 main()

@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../../client";
 
 export const getAllFiat = (
-  prisma: PrismaClient,
   options?: Partial<{
     timestampUtc: Partial<{
       gte: Date;

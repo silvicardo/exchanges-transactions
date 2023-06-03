@@ -1,12 +1,7 @@
-import {
-  CryptoComExchangeTransaction,
-  PrismaClient,
-  PrismaPromise,
-} from "@prisma/client";
+import { CryptoComExchangeTransaction, PrismaPromise } from "@prisma/client";
+import prisma from "../../../../client";
 
-export const getAll = (
-  prisma: PrismaClient
-): PrismaPromise<CryptoComExchangeTransaction[]> => {
+export const getAll = (): PrismaPromise<CryptoComExchangeTransaction[]> => {
   return prisma.cryptoComExchangeTransaction.findMany({
     where: { transactionType: "SEND" },
   });

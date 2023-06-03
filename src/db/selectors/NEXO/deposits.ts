@@ -1,16 +1,11 @@
-import {
-  PrismaClient,
-  NexoTransaction,
-  CurrencyName,
-  PrismaPromise,
-} from "@prisma/client";
+import { NexoTransaction, CurrencyName, PrismaPromise } from "@prisma/client";
 import { DepositQueryConfig } from "../types";
 import { queryUtils } from "../utils";
+import prisma from "../../../../client";
 
-export const getAllFiat = (
-  prisma: PrismaClient,
-  { timestamp }: Pick<DepositQueryConfig, "timestamp">
-): PrismaPromise<NexoTransaction[]> => {
+export const getAllFiat = ({
+  timestamp,
+}: Pick<DepositQueryConfig, "timestamp">): PrismaPromise<NexoTransaction[]> => {
   return prisma.nexoTransaction.findMany({
     where: {
       type: "DepositToExchange",
@@ -23,15 +18,14 @@ export const getAllFiat = (
   });
 };
 
-export const getAllByCrypto = (
-  prisma: PrismaClient,
-  {
-    currency,
-    timestamp,
-  }: {
-    currency: Exclude<CurrencyName, "USD" | "EUR">;
-  } & Pick<DepositQueryConfig, "timestamp">
-): PrismaPromise<NexoTransaction[]> => {
+export const getAllByCrypto = ({
+  currency,
+  timestamp,
+}: {
+  currency: Exclude<CurrencyName, "USD" | "EUR">;
+} & Pick<DepositQueryConfig, "timestamp">): PrismaPromise<
+  NexoTransaction[]
+> => {
   {
     return prisma.nexoTransaction.findMany({
       where: {

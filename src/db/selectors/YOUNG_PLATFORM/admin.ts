@@ -1,11 +1,6 @@
-import {
-  PrismaClient,
-  PrismaPromise,
-  YoungPlatformMovement,
-} from "@prisma/client";
-export const getAll = (
-  prisma: PrismaClient
-): PrismaPromise<YoungPlatformMovement[]> => {
+import { PrismaPromise, YoungPlatformMovement } from "@prisma/client";
+import prisma from "../../../../client";
+export const getAll = (): PrismaPromise<YoungPlatformMovement[]> => {
   return prisma.youngPlatformMovement.findMany({
     where: { txType: "ADMIN" },
   });

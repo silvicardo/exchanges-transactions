@@ -9,12 +9,12 @@ type Props = {
   timestamp: QueryTimespan;
 };
 export default function Total({ total, timestamp }: Props) {
-  const formattedGte = format(new Date(timestamp.gte), "yyyy-mm-dd");
-  const formattedLte = format(new Date(timestamp.lte), "yyyy-mm-dd");
+  const formattedGte = format(new Date(timestamp.gte), "yyyy-MM-dd");
+  const formattedLte = format(new Date(timestamp.lte), "yyyy-MM-dd");
   return (
     <Stat>
       <StatLabel>Total EUR Deposits</StatLabel>
-      <StatNumber>€ {total}</StatNumber>
+      <StatNumber>€ {total.toFixed(2)}</StatNumber>
       <StatHelpText>
         {formattedGte} - {formattedLte}
       </StatHelpText>

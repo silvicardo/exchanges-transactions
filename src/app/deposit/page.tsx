@@ -5,7 +5,7 @@ export default async function Deposit() {
   return (
     <Container>
       <VStack align={"flex-start"} spacing={4}>
-        <Heading mb={2}>Deposit</Heading>
+        <Heading>Deposit</Heading>
         <Fiat
           timestamp={{
             gte: new Date("2022-01-01"),

@@ -50,7 +50,3 @@ export const getFiatDepositOperationsTotal = async (
     config,
   };
 };
-
-getFiatDepositOperationsTotal({
-  timestamp: { gte: "2022-01-01", lte: "2022-12-31" },
-}).then(console.log);

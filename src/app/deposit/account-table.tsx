@@ -29,7 +29,7 @@ export default function AccountTable({ accounts }: Props) {
           {Object.entries(accounts).map(([name, total]) => (
             <Tr key={name}>
               <Td>{name}</Td>
-              <Td isNumeric>{total}</Td>
+              <Td isNumeric>€ {total.toFixed(2)}</Td>
             </Tr>
           ))}
         </Tbody>

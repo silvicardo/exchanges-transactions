@@ -3,9 +3,9 @@ import { Heading, Container, VStack } from "@/src/components/chakra";
 import Fiat from "@/src/app/deposit/fiat";
 export default async function Deposit() {
   return (
-    <Container>
+    <Container maxW={"container.xl"}>
       <VStack align={"flex-start"} spacing={4}>
-        <Heading>Deposit</Heading>
+        <Heading>Deposits</Heading>
         <Fiat
           timestamp={{
             gte: new Date("2022-01-01"),

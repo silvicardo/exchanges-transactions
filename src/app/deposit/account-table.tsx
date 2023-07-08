@@ -10,6 +10,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 type Props = {
   accounts: Record<string, number>;
@@ -28,7 +29,9 @@ export default function AccountTable({ accounts }: Props) {
         <Tbody>
           {Object.entries(accounts).map(([name, total]) => (
             <Tr key={name}>
-              <Td>{name}</Td>
+              <Td>
+                <Link href={`/deposit/${name}`}>{name}</Link>
+              </Td>
               <Td isNumeric>€ {total.toFixed(2)}</Td>
             </Tr>
           ))}

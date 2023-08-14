@@ -1,13 +1,21 @@
 import { database } from "../../db";
+import { QueryTimespan } from "@/src/db/selectors/utils";
+
+type Config = {
+  timestamp?: Partial<QueryTimespan>;
+};
 
 /*
  * This functions just retrieves funds withdrawal
  * from an exchange account and does not cover selling to fiat
  * that is another operation
  */
-export const getFiatWithdrawalOperationsTotal = async (): Promise<{
-  account: Record<string, number>;
+export const getFiatWithdrawalOperationsTotal = async (
+  config: Config
+): Promise<{
+  accounts: Record<string, number>;
   total: number;
+  config: Config;
 }> => {
   /*
    * Bitpanda support only fiat EUR withdrawals
@@ -16,7 +24,7 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
    * - bank withdrawal
    */
   const bitpanda = (
-    await database.selectors.bitpanda.withdrawals.getFiat()
+    await database.selectors.bitpanda.withdrawals.getFiat(config)
   ).reduce((acc, curr) => acc + curr.amountFiat, 0);
   /*
    * Bitpanda Pro doesn't support fiat withdrawals
@@ -39,7 +47,7 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
    * being transferred to the card, this does not calculate this
    */
   const cryptoComApp = (
-    await database.selectors.cryptoComApp.withdrawals.getAllFiat()
+    await database.selectors.cryptoComApp.withdrawals.getAllFiat(config)
   ).reduce((acc, curr) => acc + curr.amount, 0);
 
   /*
@@ -49,11 +57,11 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
   const cryptoComExchange = 0;
 
   const youngPlatform = (
-    await database.selectors.youngPlatform.withdrawals.getAllFiat()
+    await database.selectors.youngPlatform.withdrawals.getAllFiat(config)
   ).reduce((acc, curr) => acc + curr.credit, 0);
 
   return {
-    account: {
+    accounts: {
       bitpanda,
       bitpandaPro,
       nexo,
@@ -61,6 +69,7 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
       cryptoComExchange,
       youngPlatform,
     },
+    config,
     total:
       cryptoComExchange +
       bitpanda +
@@ -70,5 +79,3 @@ export const getFiatWithdrawalOperationsTotal = async (): Promise<{
       youngPlatform,
   };
 };
-
-getFiatWithdrawalOperationsTotal().then(console.log);

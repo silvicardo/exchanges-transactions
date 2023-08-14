@@ -12,18 +12,21 @@ import {
 } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import qs from "qs";
 
 type Props = {
   caption: string;
   dataKeyHead: string;
   data: Record<string, number>;
   amountSymbol: string;
+  linkSearchParams?: Record<string, string>;
 };
 export default function AmountsTable({
   data,
   dataKeyHead,
   caption,
   amountSymbol,
+  linkSearchParams = {},
 }: Props) {
   const pathname = usePathname();
   return (
@@ -41,7 +44,13 @@ export default function AmountsTable({
             <Tr key={name}>
               <Td>
                 {total > 0 ? (
-                  <Link href={`${pathname}/${name}`}>{name}</Link>
+                  <Link
+                    href={`${pathname}/${name}${qs.stringify(linkSearchParams, {
+                      addQueryPrefix: true,
+                    })}`}
+                  >
+                    {name}
+                  </Link>
                 ) : (
                   name
                 )}

@@ -1,23 +1,26 @@
 "use client";
-import { Stat, StatHelpText, StatLabel, StatNumber } from "@chakra-ui/react";
+import { StatHelpText } from "@chakra-ui/react";
 import React from "react";
 import { format } from "date-fns";
 import { QueryTimespan } from "@/src/db/selectors/utils";
+import { Amount } from "@/src/components/amount";
 
-type Props = {
-  total: number;
+type AmountProps = Pick<
+  React.ComponentProps<typeof Amount>,
+  "label" | "amount" | "currencySymbol"
+>;
+
+type Props = AmountProps & {
   timestamp: QueryTimespan;
 };
-export default function Total({ total, timestamp }: Props) {
+export const TimespanAmount = ({ timestamp, ...amountProps }: Props) => {
   const formattedGte = format(new Date(timestamp.gte), "yyyy-MM-dd");
   const formattedLte = format(new Date(timestamp.lte), "yyyy-MM-dd");
   return (
-    <Stat>
-      <StatLabel>Total EUR Deposits</StatLabel>
-      <StatNumber>€ {total.toFixed(2)}</StatNumber>
+    <Amount {...amountProps}>
       <StatHelpText>
         {formattedGte} - {formattedLte}
       </StatHelpText>
-    </Stat>
+    </Amount>
   );
-}
+};

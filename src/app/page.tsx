@@ -1,5 +1,5 @@
 import { getFiatDepositOperationsTotal } from "@/src/manager/balance/fiatDeposit";
-import { Container, VStack, Card, CardBody } from "@/src/components/chakra";
+import { VStack, Card, CardBody } from "@/src/components/chakra";
 import React from "react";
 import { getLastYear, getLastYearTimestamp } from "@/src/utils/date";
 import { Amount } from "@/src/components/amount";

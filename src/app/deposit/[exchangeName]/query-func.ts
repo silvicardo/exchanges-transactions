@@ -1,6 +1,7 @@
 import { database } from "@/src/db";
 import { PromiseReturnType } from "@prisma/client/scripts/default-index";
 import { QueryTimespan } from "@/src/db/selectors/utils";
+import { getLastYear } from "@/src/utils/date";
 
 export const EXCHANGE_SELECTOR = {
   bitpanda: database.selectors.bitpanda.deposits.getFiat,
@@ -24,8 +25,8 @@ export const getDepositsForExchange = async (name: string, config: Config) => {
   if (EXCHANGE_SELECTOR.hasOwnProperty(name)) {
     return EXCHANGE_SELECTOR[name as keyof typeof EXCHANGE_SELECTOR]({
       timestamp: {
-        gte: new Date(config?.timestamp?.gte ?? "2022-01-01"),
-        lte: new Date(config?.timestamp?.lte ?? "2022-12-31"),
+        gte: new Date(config?.timestamp?.gte ?? `${getLastYear()}-01-01`),
+        lte: new Date(config?.timestamp?.lte ?? `${getLastYear()}-12-31`),
       },
     });
   }

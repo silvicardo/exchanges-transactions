@@ -4,3 +4,5 @@ export { default as Stack } from "./stack";
 export { default as HStack } from "./h-stack";
 export { default as VStack } from "./v-stack";
 export { default as Box } from "./box";
+export { default as Card } from "./card";
+export { default as CardBody } from "./card-body";

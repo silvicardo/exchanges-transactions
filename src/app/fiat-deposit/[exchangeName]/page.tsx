@@ -1,7 +1,7 @@
 import React from "react";
 import { Heading, Container, VStack } from "@/src/components/chakra";
-import ListTable from "./list-table";
-import { getDepositsForExchange } from "./query-func";
+import { ExchangeQueryResult, getDepositsForExchange } from "./query-func";
+import DataTable from "@/src/components/data-table";
 
 type Props = {
   params: {
@@ -24,7 +24,10 @@ export default async function Deposit({
     <Container maxW={"container.xl"}>
       <VStack align={"flex-start"} spacing={4}>
         <Heading>{exchangeName}</Heading>
-        <ListTable data={deposits} />
+        <DataTable<ExchangeQueryResult[number]>
+          caption={"EUR deposits"}
+          data={deposits}
+        />
       </VStack>
     </Container>
   );

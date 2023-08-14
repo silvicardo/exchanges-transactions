@@ -31,12 +31,12 @@ const Links = [
     href: "/",
   },
   {
-    name: "Deposits",
-    href: "/deposit",
+    name: "Fiat Deposits",
+    href: "/fiat-deposit",
   },
   {
-    name: "Withdrawals",
-    href: "/withdrawal",
+    name: "Fiat Withdrawals",
+    href: "/fiat-withdrawal",
   },
 ];
 

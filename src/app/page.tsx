@@ -48,14 +48,14 @@ export default async function Home() {
         spacing={4}
         templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
       >
-        <Card as={Link} href={"/deposit"}>
+        <Card as={Link} href={"/fiat-deposit"}>
           <CardBody>
             <Suspense fallback={<Skeleton height={"57px"} />}>
               <Deposits />
             </Suspense>
           </CardBody>
         </Card>
-        <Card as={Link} href={"/withdrawal"}>
+        <Card as={Link} href={"/fiat-withdrawal"}>
           <CardBody>
             <Suspense fallback={<Skeleton height={"57px"} />}>
               <Withdrawals />

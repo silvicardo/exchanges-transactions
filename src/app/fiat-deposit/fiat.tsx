@@ -25,6 +25,7 @@ export default async function Fiat({ timestamp }: Props) {
         dataKeyHead={"exchange"}
         amountSymbol={"€"}
         data={deposits.account}
+        linkSearchParams={timestamp as Record<string, string>}
       />
     </>
   );

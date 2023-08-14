@@ -1,5 +1,6 @@
 import { PrismaPromise, YoungPlatformMovement } from "@prisma/client";
 import prisma from "../../../../client";
+import { QueryTimespan } from "@/src/db/selectors/utils";
 
 export const getAll = (): PrismaPromise<YoungPlatformMovement[]> => {
   return prisma.youngPlatformMovement.findMany({
@@ -12,10 +13,7 @@ export const getAll = (): PrismaPromise<YoungPlatformMovement[]> => {
 
 export const getAllFiat = (
   options?: Partial<{
-    date: Partial<{
-      gte: Date;
-      lte: Date;
-    }>;
+    timestamp: Partial<QueryTimespan>;
   }>
 ): PrismaPromise<YoungPlatformMovement[]> => {
   return prisma.youngPlatformMovement.findMany({
@@ -23,8 +21,8 @@ export const getAllFiat = (
       txType: "WITHDRAWAL",
       currency: "EUR",
       date: {
-        gte: new Date(options?.date?.gte ?? "2021-01-01").toISOString(),
-        lte: new Date(options?.date?.lte ?? "2022-12-31").toISOString(),
+        gte: new Date(options?.timestamp?.gte ?? "2021-01-01").toISOString(),
+        lte: new Date(options?.timestamp?.lte ?? "2022-12-31").toISOString(),
       },
     },
     orderBy: { date: "asc" },

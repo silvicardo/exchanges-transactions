@@ -1,7 +1,7 @@
 import React from "react";
 import { Heading, Container, VStack } from "@/src/components/chakra";
-import ListTable from "./list-table";
-import { getDepositsForExchange } from "./query-func";
+import { ExchangeQueryResult, getWithdrawalsForExchange } from "./query-func";
+import DataTable from "@/src/components/data-table";
 
 type Props = {
   params: {
@@ -17,14 +17,17 @@ export default async function Deposit({
   params: { exchangeName },
   searchParams,
 }: Props) {
-  const deposits = await getDepositsForExchange(exchangeName, {
+  const withdrawals = await getWithdrawalsForExchange(exchangeName, {
     timestamp: searchParams,
   });
   return (
     <Container maxW={"container.xl"}>
       <VStack align={"flex-start"} spacing={4}>
         <Heading>{exchangeName}</Heading>
-        <ListTable data={deposits} />
+        <DataTable<ExchangeQueryResult[number]>
+          caption={"EUR Withdrawals"}
+          data={withdrawals}
+        />
       </VStack>
     </Container>
   );

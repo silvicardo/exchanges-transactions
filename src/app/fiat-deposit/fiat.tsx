@@ -1,8 +1,8 @@
 import React from "react";
 import { getFiatDepositOperationsTotal } from "@/src/manager/balance/fiatDeposit";
 import { QueryTimespan } from "@/src/db/selectors/utils";
-import AccountTable from "@/src/app/deposit/account-table";
 import { TimespanAmount } from "@/src/components/timespan-amount";
+import AmountsTable from "@/src/components/amounts-table";
 
 type Props = {
   timestamp: QueryTimespan;
@@ -20,7 +20,12 @@ export default async function Fiat({ timestamp }: Props) {
         label={"Total EUR Deposits"}
         currencySymbol={"€"}
       />
-      <AccountTable accounts={deposits.account} />
+      <AmountsTable
+        caption={"EUR deposited by exchange"}
+        dataKeyHead={"exchange"}
+        amountSymbol={"€"}
+        data={deposits.account}
+      />
     </>
   );
 }

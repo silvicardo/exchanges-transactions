@@ -6,3 +6,5 @@ export { default as VStack } from "./v-stack";
 export { default as Box } from "./box";
 export { default as Card } from "./card";
 export { default as CardBody } from "./card-body";
+export { default as SimpleGrid } from "./simple-grid";
+export { default as Skeleton } from "./skeleton";

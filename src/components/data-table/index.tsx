@@ -10,12 +10,20 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { ExchangeQueryResult } from "./query-func";
+import { isDate } from "lodash";
 
-export default function ListTable<
-  K extends ExchangeQueryResult = ExchangeQueryResult
->({ data }: { data: K }) {
-  const getRow = React.useCallback((row: K[number]) => {
+type BaseDataEntry = {
+  id: number;
+};
+
+export default function DataTable<K extends BaseDataEntry = BaseDataEntry>({
+  data,
+  caption,
+}: {
+  caption: string;
+  data: K[];
+}) {
+  const getRow = React.useCallback((row: K[][number]) => {
     return (
       <Tr key={row.id as number}>
         {Object.entries(row).map(([name, value]) => {
@@ -26,9 +34,6 @@ export default function ListTable<
               </Td>
             );
           }
-          if (typeof value == "boolean") {
-            return <Td key={`${row.id}-${name}`}>{value.toString()}</Td>;
-          }
           if (!name.toLowerCase().includes("id") && typeof value === "number") {
             return (
               <Td key={`${row.id}-${name}`} isNumeric>
@@ -36,7 +41,7 @@ export default function ListTable<
               </Td>
             );
           }
-          if (value instanceof Date) {
+          if (isDate(value)) {
             return <Td key={`${row.id}-${name}`}>{value.toLocaleString()}</Td>;
           }
           return <Td key={`${row.id}-${name}`}>{value.toString()}</Td>;
@@ -47,7 +52,7 @@ export default function ListTable<
   return (
     <TableContainer>
       <Table variant="simple">
-        <TableCaption>EUR deposits</TableCaption>
+        <TableCaption>{caption}</TableCaption>
         <Thead>
           <Tr>
             {Object.keys(data[0]).map((key) => (

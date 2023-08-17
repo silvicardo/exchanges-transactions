@@ -38,6 +38,10 @@ const Links = [
     name: "Fiat Withdrawals",
     href: "/fiat-withdrawal",
   },
+  {
+    name: "Import",
+    href: "/import",
+  },
 ];
 
 const NavLink = (props: Props) => {

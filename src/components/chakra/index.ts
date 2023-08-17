@@ -8,3 +8,7 @@ export { default as Card } from "./card";
 export { default as CardBody } from "./card-body";
 export { default as SimpleGrid } from "./simple-grid";
 export { default as Skeleton } from "./skeleton";
+export { default as Input } from "./input";
+export { default as Button } from "./button";
+export { default as Select } from "./select";
+export { default as Text } from "./text";

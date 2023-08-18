@@ -15,6 +15,7 @@ import { validationSchema } from "@/src/app/import/validation";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { DropzoneField } from "@/src/app/import/dropzone-field";
+import { FileExistsAlert } from "@/src/app/import/file-exists-alert";
 
 const prepareFormData = (data: ImportFieldValues) => {
   const formData = new FormData();
@@ -50,6 +51,7 @@ export const Form = () => {
 
   const exchangeName = watch("exchange");
   const filename = watch("filename");
+  const year = watch("year");
 
   useEffect(() => {
     if (
@@ -115,6 +117,11 @@ export const Form = () => {
           </Select>
         </SimpleGrid>
         <DropzoneField control={control} name={"file"} />
+        <FileExistsAlert
+          year={year}
+          exchange={exchangeName}
+          filename={filename}
+        />
         <Button
           isLoading={isSubmitting || isPending}
           size={"lg"}

@@ -23,4 +23,5 @@ export type ImportFieldValues = {
   year: (typeof YEAR_OPTIONS)[number];
   exchange: (typeof EXCHANGE_OPTIONS)[number];
   filename: (typeof EXCHANGE_FILENAME_OPTIONS)[(typeof EXCHANGE_OPTIONS)[number]][number];
+  file: File;
 };

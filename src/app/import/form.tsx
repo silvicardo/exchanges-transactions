@@ -14,11 +14,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchema } from "@/src/app/import/validation";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { DropzoneField } from "@/src/app/import/dropzone-field";
+
+const prepareFormData = (data: ImportFieldValues) => {
+  const formData = new FormData();
+  formData.set("year", data.year);
+  formData.set("exchange", data.exchange);
+  formData.set("filename", data.filename);
+  formData.set("file", data.file);
+  console.log("formdata", formData);
+  return formData;
+};
 export const Form = () => {
   let [isPending, startTransition] = useTransition();
   const router = useRouter();
   const toast = useToast();
   const {
+    control,
     register,
     handleSubmit,
     watch,
@@ -53,10 +65,11 @@ export const Form = () => {
     <form
       onSubmit={handleSubmit((data) => {
         startTransition(async () => {
-          const result = await importExchangeData(data);
+          const result = await importExchangeData(prepareFormData(data));
+
           if (!result.success) {
             toast({
-              title: "Validation Failed!",
+              title: "Import Failed!",
               description: result.error,
               status: "error",
               duration: 9000,
@@ -65,6 +78,7 @@ export const Form = () => {
           } else {
             toast({
               title: "File imported! 🎉",
+              description: result.message,
               status: "success",
               duration: 3000,
               isClosable: true,
@@ -100,6 +114,7 @@ export const Form = () => {
             ))}
           </Select>
         </SimpleGrid>
+        <DropzoneField control={control} name={"file"} />
         <Button
           isLoading={isSubmitting || isPending}
           size={"lg"}

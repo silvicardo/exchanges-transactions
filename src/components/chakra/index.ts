@@ -14,5 +14,5 @@ export { default as Select } from "./select";
 export { default as Text } from "./text";
 export { default as Alert } from "./alert";
 export { default as AlertTitle } from "./alert-title";
-export { default as AlterDescription } from "./alert-description";
+export { default as AlertDescription } from "./alert-description";
 export { default as AlertIcon } from "./alert-icon";

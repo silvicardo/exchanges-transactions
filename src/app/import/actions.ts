@@ -1,6 +1,6 @@
 "use server";
 
-import { validationSchema } from "@/src/app/import/validation";
+import { serverValidationSchema } from "@/src/app/import/server-validation";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { ImportFieldValues } from "@/src/app/import/form-options";
@@ -9,7 +9,7 @@ import { camelCase } from "lodash";
 import { database } from "@/src/db";
 const FAKE_USER_ACCOUNT_ID = 1234;
 export const importExchangeData = async (exchangeData: FormData) => {
-  const validationResult = validationSchema.safeParse(exchangeData);
+  const validationResult = serverValidationSchema.safeParse(exchangeData);
 
   if (!validationResult.success) {
     return {
@@ -17,8 +17,7 @@ export const importExchangeData = async (exchangeData: FormData) => {
       error: validationResult.error.errors[0].message ?? "validation failed",
     };
   }
-  const { year, filename, exchange, file } =
-    validationResult.data as ImportFieldValues;
+  const { year, filename, exchange, file } = validationResult.data;
 
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);

@@ -11,7 +11,7 @@ import {
 import { useEffect, useTransition } from "react";
 import { importExchangeData } from "@/src/app/import/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { validationSchema } from "@/src/app/import/validation";
+import { clientValidationSchema } from "@/src/app/import/client-validation";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { DropzoneField } from "@/src/app/import/dropzone-field";
@@ -40,7 +40,7 @@ export const Form = () => {
   } = useForm<ImportFieldValues>({
     shouldUseNativeValidation: true,
     // @ts-ignore
-    resolver: zodResolver(validationSchema),
+    resolver: zodResolver(clientValidationSchema),
     defaultValues: {
       year: "2023",
       exchange: "YOUNG_PLATFORM",

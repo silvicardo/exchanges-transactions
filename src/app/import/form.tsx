@@ -23,7 +23,6 @@ const prepareFormData = (data: ImportFieldValues) => {
   formData.set("exchange", data.exchange);
   formData.set("filename", data.filename);
   formData.set("file", data.file);
-  console.log("formdata", formData);
   return formData;
 };
 export const Form = () => {

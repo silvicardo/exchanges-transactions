@@ -59,6 +59,19 @@ export const getFiatWithdrawalOperationsTotal = async (
   const youngPlatform = (
     await database.selectors.youngPlatform.withdrawals.getAllFiat(config)
   ).reduce((acc, curr) => acc + curr.credit, 0);
+  /*
+   * no withdraw on Crypto.com exchange
+   * just a placeholder for me to remember
+   */
+  const ledger = (
+    await database.selectors.ledger.withdrawal.getFiat(config)
+  ).reduce(
+    (acc, curr) =>
+      acc +
+      +curr.operationAmount +
+      (curr.operationFees ? +curr.operationFees : 0),
+    0
+  );
 
   return {
     accounts: {
@@ -68,6 +81,7 @@ export const getFiatWithdrawalOperationsTotal = async (
       cryptoComApp,
       cryptoComExchange,
       youngPlatform,
+      ledger,
     },
     config,
     total:
@@ -76,6 +90,7 @@ export const getFiatWithdrawalOperationsTotal = async (
       bitpandaPro +
       nexo +
       cryptoComApp +
-      youngPlatform,
+      youngPlatform +
+      ledger,
   };
 };

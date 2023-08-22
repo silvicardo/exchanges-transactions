@@ -108,6 +108,16 @@ export const importExchangeData = async (exchangeData: FormData) => {
           });
         }
         break;
+      case "LEDGER":
+        if (database.handlers.ledger.hasOwnProperty(filename)) {
+          await database.handlers.ledger[
+            filename as keyof typeof database.handlers.ledger
+          ]({
+            year,
+            userAccountId: FAKE_USER_ACCOUNT_ID,
+          });
+        }
+        break;
       default:
         return {
           success: false,

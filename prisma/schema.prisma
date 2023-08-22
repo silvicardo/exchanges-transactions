@@ -450,3 +450,27 @@ model NexoTransaction {
  dateTime DateTime
  originalData Json
 }
+
+enum LedgerOperationType {
+ IN
+ OUT
+ FEES
+ NFT_IN
+}
+
+model LedgerOperation {
+ id Int @id @default(autoincrement())
+ operationDate DateTime
+ currencyTicker CurrencyName
+ operationType LedgerOperationType
+ operationAmount String
+ operationFees String?
+ operationHash String
+ accountName String
+ accountXpub String
+ countervalueTicker CurrencyName
+ countervalueAtOperationDate Float
+ countervalueAtCsvExport Float
+ userAccountId Int
+ originalData Json
+}

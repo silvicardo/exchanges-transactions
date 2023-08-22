@@ -42,6 +42,10 @@ const Links = [
     name: "Import",
     href: "/import",
   },
+  {
+    name: "Convert",
+    href: "/convert",
+  },
 ];
 
 const NavLink = (props: Props) => {

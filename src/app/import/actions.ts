@@ -118,6 +118,17 @@ export const importExchangeData = async (exchangeData: FormData) => {
           });
         }
         break;
+
+      case "CRYPTO_COM_EXCHANGE":
+        if (database.handlers.cryptoComExchange.hasOwnProperty(filename)) {
+          await database.handlers.cryptoComExchange[
+            filename as keyof typeof database.handlers.cryptoComExchange
+          ]({
+            year,
+            userAccountId: FAKE_USER_ACCOUNT_ID,
+          });
+        }
+        break;
       default:
         return {
           success: false,
@@ -125,6 +136,7 @@ export const importExchangeData = async (exchangeData: FormData) => {
         };
     }
   } catch (e) {
+    console.log(e);
     return {
       success: false,
       error: "file written but handler failed",

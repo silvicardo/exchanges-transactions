@@ -4,6 +4,7 @@ import {
   bitpandaProSchema,
   bitpandaSchema,
   cryptoComAppSchema,
+  cryptoComExchangeSchema,
   ledgerSchema,
   nexoSchema,
   ypSchema,
@@ -16,6 +17,7 @@ export const serverValidationSchema = zfd.formData(
     bitpandaProSchema.extend({ file: z.instanceof(Blob) }),
     nexoSchema.extend({ file: z.instanceof(Blob) }),
     cryptoComAppSchema.extend({ file: z.instanceof(Blob) }),
+    cryptoComExchangeSchema.extend({ file: z.instanceof(Blob) }),
     ledgerSchema.extend({ file: z.instanceof(Blob) }),
   ])
 );

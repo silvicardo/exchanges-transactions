@@ -37,6 +37,13 @@ export const cryptoComAppSchema = baseSchema.extend({
   exchange: z.literal(exchangeEnum.enum.CRYPTO_COM_APP),
   filename: z.enum(EXCHANGE_FILENAME_OPTIONS[exchangeEnum.enum.CRYPTO_COM_APP]),
 });
+
+export const cryptoComExchangeSchema = baseSchema.extend({
+  exchange: z.literal(exchangeEnum.enum.CRYPTO_COM_EXCHANGE),
+  filename: z.enum(
+    EXCHANGE_FILENAME_OPTIONS[exchangeEnum.enum.CRYPTO_COM_EXCHANGE]
+  ),
+});
 export const ledgerSchema = baseSchema.extend({
   exchange: z.literal(exchangeEnum.enum.LEDGER),
   filename: z.enum(EXCHANGE_FILENAME_OPTIONS[exchangeEnum.enum.LEDGER]),

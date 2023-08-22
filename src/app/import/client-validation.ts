@@ -3,6 +3,7 @@ import {
   bitpandaProSchema,
   bitpandaSchema,
   cryptoComAppSchema,
+  cryptoComExchangeSchema,
   ledgerSchema,
   nexoSchema,
   ypSchema,
@@ -14,5 +15,6 @@ export const clientValidationSchema = z.discriminatedUnion("exchange", [
   bitpandaProSchema.extend({ file: z.instanceof(File) }),
   nexoSchema.extend({ file: z.instanceof(File) }),
   cryptoComAppSchema.extend({ file: z.instanceof(File) }),
+  cryptoComExchangeSchema.extend({ file: z.instanceof(File) }),
   ledgerSchema.extend({ file: z.instanceof(File) }),
 ]);

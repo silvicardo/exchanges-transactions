@@ -465,7 +465,7 @@ model LedgerOperation {
  operationType LedgerOperationType
  operationAmount String
  operationFees String?
- operationHash String
+ operationHash String @unique
  accountName String
  accountXpub String
  countervalueTicker CurrencyName

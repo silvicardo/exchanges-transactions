@@ -91,7 +91,7 @@ export const handle = async ({
   year,
 }: {
   userAccountId: number;
-  year: "2022" | "2023";
+  year: "2021" | "2022" | "2023";
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(
     `${year}/LEDGER/operations.csv`

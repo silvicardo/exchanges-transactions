@@ -38,6 +38,12 @@ export const getFiatDepositOperationsTotal = async (
     })
   ).reduce((acc, curr) => acc + curr.credit, 0);
 
+  const ledger = (
+    await database.selectors.ledger.deposits.getFiat({
+      timestamp,
+    })
+  ).reduce((acc, curr) => acc + +curr.operationAmount, 0);
+
   return {
     account: {
       bitpanda,
@@ -45,8 +51,10 @@ export const getFiatDepositOperationsTotal = async (
       nexo,
       cryptoComApp,
       youngPlatform,
+      ledger,
     },
-    total: bitpanda + bitpandaPro + nexo + cryptoComApp + youngPlatform,
+    total:
+      bitpanda + bitpandaPro + nexo + cryptoComApp + youngPlatform + ledger,
     config,
   };
 };

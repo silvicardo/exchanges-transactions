@@ -13,6 +13,7 @@ export default async function Koinly() {
           </Text>
         </SimpleGrid>
         <Cta exchangeName={"cryptoComExchange"} />
+        <Cta exchangeName={"youngPlatform"} />
       </VStack>
     </VStack>
   );

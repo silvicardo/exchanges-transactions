@@ -413,6 +413,30 @@ model CryptoComExchangeTransaction {
  originalData Json
 }
 
+enum CryptoComExchangeDustConversionType {
+ DUST_CONVERSION
+}
+
+enum CryptoComExchangeDustConversionStatus {
+ COMPLETED
+}
+
+model CryptoComExchangeDustConversion {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ accountUuid String
+ conversionId String @unique
+ conversionType CryptoComExchangeDustConversionType
+ status CryptoComExchangeDustConversionStatus
+ dustCurrency CurrencyName
+ dustAmount String
+ toCurrency CurrencyName
+ toAmount String
+ createTime DateTime
+ updateTime DateTime
+ originalData Json
+}
+
 enum NexoTransactionType {
  Deposit
  LockingTermDeposit

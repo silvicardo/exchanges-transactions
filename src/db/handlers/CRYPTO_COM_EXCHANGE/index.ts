@@ -1,3 +1,5 @@
+import { handle as dustConversions } from "./dust_conversions";
+
 export const handlers = {
-  transactions: () => {},
+  dust_conversions: dustConversions,
 };

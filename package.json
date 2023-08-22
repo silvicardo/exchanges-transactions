@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node prisma/seed.ts",
     "parse": "ts-node -r dotenv/config commands/parse.ts",
-    "unparse": "ts-node -r dotenv/config commands/unparse.ts",
+    "transform": "ts-node -r dotenv/config commands/transform.ts",
     "parse:yp": "ts-node -r dotenv/config commands/yp.ts",
     "parse:bitpanda": "ts-node -r dotenv/config commands/bitpanda.ts",
     "parse:bitpanda-pro": "ts-node -r dotenv/config commands/bitpanda_pro.ts",

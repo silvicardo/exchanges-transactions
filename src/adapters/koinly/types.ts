@@ -2,9 +2,9 @@ import { CurrencyName } from "@prisma/client";
 
 export type KoinlyUniversal = {
   Date: string;
-  "Sent Amount": number;
+  "Sent Amount": number | string;
   "Sent Currency": CurrencyName;
-  "Received Amount": number;
+  "Received Amount": number | string;
   "Received Currency": CurrencyName;
   "Fee Amount"?: number;
   "Fee Currency"?: CurrencyName;

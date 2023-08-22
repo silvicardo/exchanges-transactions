@@ -14,10 +14,11 @@ const config = processArgv<Config>({
 });
 
 /**
- @example npm run unparse -- --input_path=my/path/in/csv/folder/file.csv --output_path=my/path/in/csv/folder/file.csv
+ * Command to
+ @example npm run unparse -- --input_path=my/path/in/jsons/folder/file.json --output_path=my/path/in/csv/folder/file.csv
  */
 const handle = async () => {
-  const jsonData = fs.readFileSync(`./csvs/${config.input_path}`);
+  const jsonData = fs.readFileSync(`./jsons/${config.input_path}`);
   // @ts-ignore
   const data = JSON.parse(jsonData);
   return convertJSONtoCSV(data, config.output_path);

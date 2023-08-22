@@ -5,9 +5,10 @@ import { handle as handleAdmin } from "./admin";
 import { handle as handleGift } from "./gift";
 import { handle as handleTradeBuy } from "./trade_buy";
 import { handle as handleTradeSell } from "./trade_sell";
-import { database } from "../../../../db";
+import { database } from "@/src/db";
 import { orderBy } from "lodash";
-import { convertJSONtoCSV } from "../../../../../convertJSONtoCSV";
+import { convertJSONtoCSV } from "@/convertJSONtoCSV";
+import { format } from "date-fns";
 
 export const handle = async () => {
   const selectors = database.selectors.youngPlatform;
@@ -36,8 +37,9 @@ export const handle = async () => {
 
   return convertJSONtoCSV(
     sorted,
-    "koinly_universal_with_staking_admin_gift.csv"
+    `convert/koinly/universal_young_platform_${format(
+      new Date(),
+      "yyyy_MM_dd_HH_mm_ss"
+    )}.csv`
   );
 };
-
-handle();

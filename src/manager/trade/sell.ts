@@ -95,13 +95,3 @@ export const getSellToFiatOperations = async (
       cryptoComExchange,
   };
 };
-// ts-node src/manager/trade/sell.ts
-const queryCurrencies = ["*", ...CRYPTO_CURRENCIES] as const;
-Promise.all(
-  queryCurrencies.map((crypto) =>
-    getSellToFiatOperations({
-      crypto,
-      timestamp: { gte: "2022-01-01", lte: "2022-12-31" },
-    })
-  )
-).then((r) => r.forEach((d) => console.log(d.config.crypto, `${d.total} €`)));

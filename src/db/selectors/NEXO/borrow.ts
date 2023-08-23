@@ -27,12 +27,62 @@ export const getLiquidations = ({
   });
 };
 
-export const getCreditCardPurchase = ({
+/**
+ * This includes both credit(borrow) card spending and ATM withdrawals
+ * @param timestamp
+ */
+export const getFiatCreditCardMovement = ({
   timestamp,
 }: Pick<LiquidationQueryConfig, "timestamp">) => {
   return prisma.nexoTransaction.findMany({
     where: {
-      type: "CreditCardStatus",
+      type: { in: ["CreditCardStatus", "CreditCardOverdraftAuthorization"] },
+      details: {
+        contains: "approved",
+      },
+      ...(timestamp
+        ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
+    },
+  });
+};
+
+/**
+ * This is for borrowing fiat using bank transfer
+ * @param timestamp
+ */
+export const getFiatBankTransfer = ({
+  timestamp,
+}: {
+  timestamp?: Partial<QueryTimespan>;
+}) => {
+  return prisma.nexoTransaction.findMany({
+    where: {
+      type: "WithdrawalCredit",
+      details: {
+        contains: "approved",
+      },
+      ...(timestamp
+        ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
+    },
+  });
+};
+
+export const getFiat = ({
+  timestamp,
+}: {
+  timestamp?: Partial<QueryTimespan>;
+}) => {
+  return prisma.nexoTransaction.findMany({
+    where: {
+      type: {
+        in: [
+          "CreditCardStatus",
+          "CreditCardOverdraftAuthorization",
+          "WithdrawalCredit",
+        ],
+      },
       details: {
         contains: "approved",
       },

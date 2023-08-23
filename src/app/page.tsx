@@ -14,7 +14,6 @@ import Link from "next/link";
 import { getFiatWithdrawalOperationsTotal } from "@/src/manager/balance/fiatWithdraw";
 import { database } from "@/src/db";
 import { QueryTimespan } from "@/src/db/selectors/utils";
-import { getFiat, getFiatBorrow } from "@/src/db/selectors/NEXO/borrow";
 
 type QueryConfig = {
   timestamp?: Partial<QueryTimespan>;

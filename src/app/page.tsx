@@ -14,15 +14,15 @@ import Link from "next/link";
 import { getFiatWithdrawalOperationsTotal } from "@/src/manager/balance/fiatWithdraw";
 import { database } from "@/src/db";
 import { QueryTimespan } from "@/src/db/selectors/utils";
+import { getFiat, getFiatBorrow } from "@/src/db/selectors/NEXO/borrow";
 
 type QueryConfig = {
   timestamp?: Partial<QueryTimespan>;
 };
 const Borrowed = async ({ timestamp }: QueryConfig) => {
-  const lastYearBorrowed =
-    await database.selectors.nexo.borrow.getCreditCardPurchase({
-      timestamp: timestamp,
-    });
+  const lastYearBorrowed = await database.selectors.nexo.borrow.getFiat({
+    timestamp: timestamp,
+  });
   return (
     <Amount
       amount={lastYearBorrowed.reduce((acc, t) => acc + t.usdEquivalent, 0)}

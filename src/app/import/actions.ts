@@ -118,6 +118,16 @@ export const importExchangeData = async (exchangeData: FormData) => {
           });
         }
         break;
+      case "COINBASE":
+        if (database.handlers.coinbase.hasOwnProperty(filename)) {
+          await database.handlers.coinbase[
+            filename as keyof typeof database.handlers.coinbase
+          ]({
+            year,
+            userAccountId: FAKE_USER_ACCOUNT_ID,
+          });
+        }
+        break;
 
       case "CRYPTO_COM_EXCHANGE":
         if (database.handlers.cryptoComExchange.hasOwnProperty(filename)) {

@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   bitpandaProSchema,
   bitpandaSchema,
+  coinbaseSchema,
   cryptoComAppSchema,
   cryptoComExchangeSchema,
   ledgerSchema,
@@ -19,5 +20,6 @@ export const serverValidationSchema = zfd.formData(
     cryptoComAppSchema.extend({ file: z.instanceof(Blob) }),
     cryptoComExchangeSchema.extend({ file: z.instanceof(Blob) }),
     ledgerSchema.extend({ file: z.instanceof(Blob) }),
+    coinbaseSchema.extend({ file: z.instanceof(Blob) }),
   ])
 );

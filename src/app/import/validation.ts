@@ -48,3 +48,8 @@ export const ledgerSchema = baseSchema.extend({
   exchange: z.literal(exchangeEnum.enum.LEDGER),
   filename: z.enum(EXCHANGE_FILENAME_OPTIONS[exchangeEnum.enum.LEDGER]),
 });
+
+export const coinbaseSchema = baseSchema.extend({
+  exchange: z.literal(exchangeEnum.enum.COINBASE),
+  filename: z.enum(EXCHANGE_FILENAME_OPTIONS[exchangeEnum.enum.COINBASE]),
+});

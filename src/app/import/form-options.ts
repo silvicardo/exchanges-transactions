@@ -7,6 +7,7 @@ export const EXCHANGE_OPTIONS = [
   "YOUNG_PLATFORM",
   "NEXO",
   "LEDGER",
+  "COINBASE",
 ] as const;
 
 export const EXCHANGE_FILENAME_OPTIONS = {
@@ -21,6 +22,7 @@ export const EXCHANGE_FILENAME_OPTIONS = {
   YOUNG_PLATFORM: ["buy_sell_swap", "deposit_withdraw_fee_order"] as const,
   NEXO: ["transactions"] as const,
   LEDGER: ["operations"] as const,
+  COINBASE: ["transactions"] as const,
 } satisfies Record<string, readonly string[]>;
 
 export type ImportFieldValues = {

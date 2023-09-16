@@ -44,6 +44,12 @@ export const getFiatDepositOperationsTotal = async (
     })
   ).reduce((acc, curr) => acc + +curr.operationAmount, 0);
 
+  const coinbase = (
+    await database.selectors.coinbase.deposits.getAllFiat({
+      timestamp,
+    })
+  ).reduce((acc, curr) => acc + +curr.totalInclusiveOfFeesAndOrSpread, 0);
+
   return {
     account: {
       bitpanda,
@@ -52,9 +58,16 @@ export const getFiatDepositOperationsTotal = async (
       cryptoComApp,
       youngPlatform,
       ledger,
+      coinbase,
     },
     total:
-      bitpanda + bitpandaPro + nexo + cryptoComApp + youngPlatform + ledger,
+      bitpanda +
+      bitpandaPro +
+      nexo +
+      cryptoComApp +
+      youngPlatform +
+      ledger +
+      coinbase,
     config,
   };
 };

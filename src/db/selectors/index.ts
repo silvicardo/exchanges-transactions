@@ -5,6 +5,7 @@ import { selectors as bitpandaSelectors } from "./BITPANDA";
 import { selectors as bitpandaProSelectors } from "./BITPANDA_PRO";
 import { selectors as nexoSelectors } from "./NEXO";
 import { selectors as ledgerSelectors } from "./LEDGER";
+import { selectors as coinbaseSelectors } from "./COINBASE";
 
 export const selectors = {
   youngPlatform: youngPlatformSelectors,
@@ -14,4 +15,5 @@ export const selectors = {
   bitpandaPro: bitpandaProSelectors,
   nexo: nexoSelectors,
   ledger: ledgerSelectors,
+  coinbase: coinbaseSelectors,
 };

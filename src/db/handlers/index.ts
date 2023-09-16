@@ -4,6 +4,7 @@ import { handlers as bitpandaPro } from "./BITPANDA_PRO";
 import { handlers as bitpanda } from "./BITPANDA";
 import { handlers as nexo } from "./NEXO";
 import { handlers as ledger } from "./LEDGER";
+import { handlers as coinbase } from "./COINBASE";
 import { handlers as cryptoComExchange } from "./CRYPTO_COM_EXCHANGE";
 
 export const handlers = {
@@ -14,4 +15,5 @@ export const handlers = {
   bitpanda,
   nexo,
   ledger,
+  coinbase,
 };

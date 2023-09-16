@@ -21,6 +21,13 @@ export default async function Deposit() {
         <Card>
           <CardBody>
             <Suspense fallback={<Skeleton height={"445px"} />}>
+              <Fiat timestamp={getYearTimestamp(2020)} />
+            </Suspense>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <Suspense fallback={<Skeleton height={"445px"} />}>
               <Fiat timestamp={getYearTimestamp(2021)} />
             </Suspense>
           </CardBody>

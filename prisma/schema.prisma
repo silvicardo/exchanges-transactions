@@ -113,6 +113,10 @@ enum CurrencyName {
  UST
  OP
  ARB
+ COMP
+ CGLD
+ NU
+ GRT
  SBTC
  SETH
  SAAVE
@@ -496,5 +500,29 @@ model LedgerOperation {
  countervalueAtOperationDate Float
  countervalueAtCsvExport Float
  userAccountId Int
+ originalData Json
+}
+
+enum CoinbaseTransactionType {
+ Buy
+ Sell
+ Convert
+ Learning_Reward
+ Rewards_Income
+}
+
+model CoinbaseTransaction {
+ id Int @id @default(autoincrement())
+ userAccountId Int
+ timestamp DateTime @unique
+ transactionType CoinbaseTransactionType
+ asset CurrencyName
+ quantityTransacted String
+ spotPriceCurrency CurrencyName
+ spotPriceAtTransaction String
+ subtotal String
+ totalInclusiveOfFeesAndOrSpread String
+ feesAndOrSpread String
+ notes String
  originalData Json
 }

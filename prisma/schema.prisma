@@ -149,6 +149,7 @@ enum YPTxType {
  GIFTCARD_STEPDROP
  TAX_REPORT
  SAVINGS
+ PROMO_WALLET
 }
 
 model Currency {

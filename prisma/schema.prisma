@@ -11,19 +11,19 @@ datasource db {
 }
 
 model User {
- id Int @id @default(autoincrement())
- fullName String @unique
- accounts Account[]
+  id       Int       @id @default(autoincrement())
+  fullName String    @unique
+  accounts Account[]
 }
 
 model Account {
- id Int @id @default(autoincrement())
- email String
- owner User @relation(fields: [ownerId], references: [id])
- ownerId Int
- exchangeId Int
- exchange Exchange @relation(fields: [exchangeId], references: [id])
- exchangeUserId Int
+  id             Int      @id @default(autoincrement())
+  email          String
+  owner          User     @relation(fields: [ownerId], references: [id])
+  ownerId        Int
+  exchangeId     Int
+  exchange       Exchange @relation(fields: [exchangeId], references: [id])
+  exchangeUserId Int
 }
 
 enum ExchangeName {
@@ -36,494 +36,498 @@ enum ExchangeName {
 }
 
 model Exchange {
- id Int @id @default(autoincrement())
- name ExchangeName
- userAccounts Account[]
+  id           Int          @id @default(autoincrement())
+  name         ExchangeName
+  userAccounts Account[]
 }
 
 enum TransactionSide {
- BUY
- SELL
+  BUY
+  SELL
 }
 
 enum CurrencyName {
- EUR
- USD
- BTC
- ETH
- SOL
- MATIC
- DOT
- LINK
- AVAX
- AAVE
- YFI
- DOGE
- BCH
- LTC
- XLM
- XRP
- DASH
- EOS
- XTZ
- UNI
- BAT
- ADA
- LUNA
- LUNC
- NEAR
- REPV2
- USDT
- USDC
- KNC
- MKR
- SUSHI
- SNX
- SAND
- MANA
- ENJ
- CRO
- UMA
- CHR
- VET
- GALA
- EGLD
- SHIB
- ALGO
- AXS
- ONE
- ELON
- KDA
- THETA
- ATOM
- NEXO
- EURX
- BEST
- FIL
- TRX
- ICP
- BNB
- FTT
- FTM
- PAXG
- YNG
- ETHW
- LUNA2
- APE
- UST
- OP
- ARB
- COMP
- CGLD
- NU
- GRT
- SBTC
- SETH
- SAAVE
- SLINK
- SAVAX
- SSOL
- SDOGE
- SMATIC
- SDOT
- SFTM
+  EUR
+  USD
+  BTC
+  ETH
+  SOL
+  MATIC
+  DOT
+  LINK
+  AVAX
+  AAVE
+  YFI
+  DOGE
+  BCH
+  LTC
+  XLM
+  XRP
+  DASH
+  EOS
+  XTZ
+  UNI
+  BAT
+  ADA
+  LUNA
+  LUNC
+  NEAR
+  REPV2
+  USDT
+  USDC
+  KNC
+  MKR
+  SUSHI
+  SNX
+  SAND
+  MANA
+  ENJ
+  CRO
+  UMA
+  CHR
+  VET
+  GALA
+  EGLD
+  SHIB
+  ALGO
+  AXS
+  ONE
+  ELON
+  KDA
+  THETA
+  ATOM
+  NEXO
+  EURX
+  BEST
+  FIL
+  TRX
+  ICP
+  BNB
+  FTT
+  FTM
+  PAXG
+  YNG
+  ETHW
+  LUNA2
+  APE
+  UST
+  OP
+  ARB
+  COMP
+  CGLD
+  NU
+  GRT
+  SBTC
+  SETH
+  SAAVE
+  SLINK
+  SAVAX
+  SSOL
+  SDOGE
+  SMATIC
+  SDOT
+  SFTM
+  DYDX
+  LDO
+  RNDR
 }
 
-
 enum CurrencyTypology {
- CRYPTO
- FIAT
+  CRYPTO
+  FIAT
 }
 
 enum YPTxType {
- DEPOSIT
- WITHDRAWAL
- ORDER_PLACEMENT
- ORDER_MATCHED
- ORDER_CANCELLED
- REFERRAL
- ADMIN
- FEE
- STAKING_TRANSACTION
- STAKING_REWARD
- GIFTCARD_STEPDROP
- TAX_REPORT
- SAVINGS
- PROMO_WALLET
+  DEPOSIT
+  WITHDRAWAL
+  ORDER_PLACEMENT
+  ORDER_MATCHED
+  ORDER_CANCELLED
+  REFERRAL
+  ADMIN
+  FEE
+  STAKING_TRANSACTION
+  STAKING_REWARD
+  GIFTCARD_STEPDROP
+  TAX_REPORT
+  SAVINGS
+  PROMO_WALLET
+  DUST_CONVERSION
 }
 
 model Currency {
- id Int @id @default(autoincrement())
- name CurrencyName @unique
- typology CurrencyTypology
+  id       Int              @id @default(autoincrement())
+  name     CurrencyName     @unique
+  typology CurrencyTypology
 }
 
 model YoungPlatformTrade {
- id Int @id @default(autoincrement())
- userAccountId Int
- txnId Int @unique
- base CurrencyName
- quote CurrencyName
- amount Float
- volume Float
- rate Float
- brokerage Float
- brokerageCurrency CurrencyName
- side TransactionSide
- date DateTime
- originalData Json
+  id                Int             @id @default(autoincrement())
+  userAccountId     Int
+  txnId             Int             @unique
+  base              CurrencyName
+  quote             CurrencyName
+  amount            Float
+  volume            Float
+  rate              Float
+  brokerage         Float
+  brokerageCurrency CurrencyName
+  side              TransactionSide
+  date              DateTime
+  originalData      Json
 }
 
 model YoungPlatformMovement {
- id Int @id @default(autoincrement())
- userAccountId Int
- moveId Int @unique
- credit Float
- debit Float
- currency CurrencyName
- date DateTime
- txType YPTxType
- originalData Json
+  id            Int          @id @default(autoincrement())
+  userAccountId Int
+  moveId        Int          @unique
+  credit        Float
+  debit         Float
+  currency      CurrencyName
+  date          DateTime
+  txType        YPTxType
+  originalData  Json
 }
 
 enum BitpandaTxnType {
- deposit
- buy
- sell
- withdrawal
- transfer
+  deposit
+  buy
+  sell
+  withdrawal
+  transfer
 }
 
 enum BitpandaInOutType {
- incoming
- outgoing
+  incoming
+  outgoing
 }
 
 enum BitpandaAssetClass {
- Fiat
- Cryptocurrency
+  Fiat
+  Cryptocurrency
 }
 
 enum BitpandaSupportedFiats {
- EUR
+  EUR
 }
 
 enum BitpandaFeeCurrencyName {
- EUR
- BEST
+  EUR
+  BEST
 }
 
 model BitpandaTrade {
- id Int @id @default(autoincrement())
- userAccountId Int
- transactionId String @unique
- timestamp DateTime
- transactionType BitpandaTxnType
- inOut BitpandaInOutType
- amountFiat Float
- fiat BitpandaSupportedFiats
- amountAsset Float?
- asset CurrencyName
- assetMarketPrice Float?
- assetMarketPriceCurrency BitpandaSupportedFiats?
- assetClass BitpandaAssetClass
- productId Int?
- fee Float?
- feeAsset BitpandaFeeCurrencyName?
- spread Float?
- spreadCurrency CurrencyName?
- originalData Json
+  id                       Int                      @id @default(autoincrement())
+  userAccountId            Int
+  transactionId            String                   @unique
+  timestamp                DateTime
+  transactionType          BitpandaTxnType
+  inOut                    BitpandaInOutType
+  amountFiat               Float
+  fiat                     BitpandaSupportedFiats
+  amountAsset              Float?
+  asset                    CurrencyName
+  assetMarketPrice         Float?
+  assetMarketPriceCurrency BitpandaSupportedFiats?
+  assetClass               BitpandaAssetClass
+  productId                Int?
+  fee                      Float?
+  feeAsset                 BitpandaFeeCurrencyName?
+  spread                   Float?
+  spreadCurrency           CurrencyName?
+  originalData             Json
 }
 
 enum BitpandaProDepositWithdrawType {
- Deposit
- Withdrawal
+  Deposit
+  Withdrawal
 }
 
 enum BitpandaProDepositWithdrawInOutType {
- Incoming
- Outgoing
+  Incoming
+  Outgoing
 }
 
 enum BitpandaProDepositWithdrawInternalExternalType {
- Internal
- External
+  Internal
+  External
 }
 
 model BitpandaProDepositWithdraw {
- id Int @id @default(autoincrement())
- userAccountId Int
- transactionId String @unique
- externalTransactionId String?
- type BitpandaProDepositWithdrawType
- inOut BitpandaProDepositWithdrawInOutType
- internalExternal BitpandaProDepositWithdrawInternalExternalType
- amount Float
- currency CurrencyName
- fee Float
- timeCreated String
- accountId String
- accountName String
- originalData Json
+  id                    Int                                            @id @default(autoincrement())
+  userAccountId         Int
+  transactionId         String                                         @unique
+  externalTransactionId String?
+  type                  BitpandaProDepositWithdrawType
+  inOut                 BitpandaProDepositWithdrawInOutType
+  internalExternal      BitpandaProDepositWithdrawInternalExternalType
+  amount                Float
+  currency              CurrencyName
+  fee                   Float
+  timeCreated           String
+  accountId             String
+  accountName           String
+  originalData          Json
 }
 
 model BitpandaProTrade {
- id Int @id @default(autoincrement())
- userAccountId Int
- orderId String @unique
- tradeId String @unique
- type TransactionSide
- market String
- amount Float
- amountCurrency CurrencyName
- price Float
- priceCurrency CurrencyName
- fee Float
- feeCurrency CurrencyName
- timeUtc DateTime
- bestEurRate Float?
- accountId String
- accountName String
- originalData Json
+  id             Int             @id @default(autoincrement())
+  userAccountId  Int
+  orderId        String          @unique
+  tradeId        String          @unique
+  type           TransactionSide
+  market         String
+  amount         Float
+  amountCurrency CurrencyName
+  price          Float
+  priceCurrency  CurrencyName
+  fee            Float
+  feeCurrency    CurrencyName
+  timeUtc        DateTime
+  bestEurRate    Float?
+  accountId      String
+  accountName    String
+  originalData   Json
 }
 
 enum CryptoComFiatTransactionKind {
- viban_card_top_up
- viban_deposit
- viban_purchase
- crypto_viban
+  viban_card_top_up
+  viban_deposit
+  viban_purchase
+  crypto_viban
 }
 
 model CryptoComFiatTransaction {
- id Int @id @default(autoincrement())
- userAccountId Int
- timestampUtc DateTime @unique
- transactionDescription String
- currency CurrencyName
- amount Float
- toCurrency CurrencyName
- toAmount Float
- nativeCurrency CurrencyName
- nativeAmount Float
- nativeAmountInUsd Float
- transactionKind CryptoComFiatTransactionKind
- transactionHash String?
- originalData Json
+  id                     Int                          @id @default(autoincrement())
+  userAccountId          Int
+  timestampUtc           DateTime                     @unique
+  transactionDescription String
+  currency               CurrencyName
+  amount                 Float
+  toCurrency             CurrencyName
+  toAmount               Float
+  nativeCurrency         CurrencyName
+  nativeAmount           Float
+  nativeAmountInUsd      Float
+  transactionKind        CryptoComFiatTransactionKind
+  transactionHash        String?
+  originalData           Json
 }
 
 enum CryptoComCryptoTransactionKind {
- referral_card_cashback
- viban_purchase
- crypto_viban_exchange
- crypto_earn_program_created
- crypto_earn_interest_paid
- crypto_earn_program_withdrawn
- exchange_to_crypto_transfer
- crypto_to_exchange_transfer
- supercharger_deposit
- supercharger_reward_to_app_credited
- crypto_exchange
- crypto_purchase
- dust_conversion_credited
- dust_conversion_debited
- crypto_deposit
- crypto_withdrawal
- rewards_platform_deposit_credited
- referral_gift
- referral_bonus
- lockup_lock
- reimbursement
- lockup_unlock
- admin_wallet_credited
- crypto_wallet_swap_credited
- crypto_wallet_swap_debited
- supercharger_withdrawal
+  referral_card_cashback
+  viban_purchase
+  crypto_viban_exchange
+  crypto_earn_program_created
+  crypto_earn_interest_paid
+  crypto_earn_program_withdrawn
+  exchange_to_crypto_transfer
+  crypto_to_exchange_transfer
+  supercharger_deposit
+  supercharger_reward_to_app_credited
+  crypto_exchange
+  crypto_purchase
+  dust_conversion_credited
+  dust_conversion_debited
+  crypto_deposit
+  crypto_withdrawal
+  rewards_platform_deposit_credited
+  referral_gift
+  referral_bonus
+  lockup_lock
+  reimbursement
+  lockup_unlock
+  admin_wallet_credited
+  crypto_wallet_swap_credited
+  crypto_wallet_swap_debited
+  supercharger_withdrawal
 }
 
 model CryptoComCryptoTransaction {
- id Int @id @default(autoincrement())
- userAccountId Int
- timestampUtc DateTime @unique
- transactionDescription String
- currency CurrencyName
- amount Float
- toCurrency CurrencyName?
- toAmount Float?
- nativeCurrency CurrencyName
- nativeAmount Float
- nativeAmountInUsd Float
- transactionKind CryptoComCryptoTransactionKind
- transactionHash String?
- originalData Json
+  id                     Int                            @id @default(autoincrement())
+  userAccountId          Int
+  timestampUtc           DateTime                       @unique
+  transactionDescription String
+  currency               CurrencyName
+  amount                 Float
+  toCurrency             CurrencyName?
+  toAmount               Float?
+  nativeCurrency         CurrencyName
+  nativeAmount           Float
+  nativeAmountInUsd      Float
+  transactionKind        CryptoComCryptoTransactionKind
+  transactionHash        String?
+  originalData           Json
 }
 
 enum CryptoComCardCurrency {
- EUR
+  EUR
 }
 
 model CryptoComCardTransaction {
- id Int @id @default(autoincrement())
- userAccountId Int
- timestampUtc DateTime @unique
- transactionDescription String
- currency CryptoComCardCurrency
- amount Float
- toCurrency CryptoComCardCurrency?
- toAmount Float?
- nativeCurrency CurrencyName
- nativeAmount Float
- nativeAmountInUsd Float
- transactionKind String?
- transactionHash String?
- originalData Json
+  id                     Int                    @id @default(autoincrement())
+  userAccountId          Int
+  timestampUtc           DateTime               @unique
+  transactionDescription String
+  currency               CryptoComCardCurrency
+  amount                 Float
+  toCurrency             CryptoComCardCurrency?
+  toAmount               Float?
+  nativeCurrency         CurrencyName
+  nativeAmount           Float
+  nativeAmountInUsd      Float
+  transactionKind        String?
+  transactionHash        String?
+  originalData           Json
 }
 
 enum CryptoComExchangeTransactionType {
- EXCHANGE
- SEND
- RECEIVE
+  EXCHANGE
+  SEND
+  RECEIVE
 }
 
 enum CryptoComExchangeTransactionTag {
- UNCATEGORIZED
- TRADE
+  UNCATEGORIZED
+  TRADE
 }
+
 model CryptoComExchangeTransaction {
- id Int @id @default(autoincrement())
- userAccountId Int
- transactionId String @unique
- source String
- category String
- transactionTime DateTime
- transactionType CryptoComExchangeTransactionType
- receiveCurrency CurrencyName?
- receiveAmount Float?
- receiveWallet String?
- receiveAddress String?
- receiveTag CryptoComExchangeTransactionTag?
- sendCurrency CurrencyName?
- sendAmount Float?
- sendWallet String?
- sendAddress String?
- sendTag CryptoComExchangeTransactionTag?
- feeCurrency CurrencyName?
- feeAmount Float?
- comment String?
- sendWorth Float
- receiveWorth Float
- feeWorth Float
- receiveGain Float?
- ignored Boolean @default(false)
- transactionUrl String?
- originalData Json
+  id              Int                              @id @default(autoincrement())
+  userAccountId   Int
+  transactionId   String                           @unique
+  source          String
+  category        String
+  transactionTime DateTime
+  transactionType CryptoComExchangeTransactionType
+  receiveCurrency CurrencyName?
+  receiveAmount   Float?
+  receiveWallet   String?
+  receiveAddress  String?
+  receiveTag      CryptoComExchangeTransactionTag?
+  sendCurrency    CurrencyName?
+  sendAmount      Float?
+  sendWallet      String?
+  sendAddress     String?
+  sendTag         CryptoComExchangeTransactionTag?
+  feeCurrency     CurrencyName?
+  feeAmount       Float?
+  comment         String?
+  sendWorth       Float
+  receiveWorth    Float
+  feeWorth        Float
+  receiveGain     Float?
+  ignored         Boolean                          @default(false)
+  transactionUrl  String?
+  originalData    Json
 }
 
 enum CryptoComExchangeDustConversionType {
- DUST_CONVERSION
+  DUST_CONVERSION
 }
 
 enum CryptoComExchangeDustConversionStatus {
- COMPLETED
+  COMPLETED
 }
 
 model CryptoComExchangeDustConversion {
- id Int @id @default(autoincrement())
- userAccountId Int
- accountUuid String
- conversionId String @unique
- conversionType CryptoComExchangeDustConversionType
- status CryptoComExchangeDustConversionStatus
- dustCurrency CurrencyName
- dustAmount String
- toCurrency CurrencyName
- toAmount String
- createTime DateTime
- updateTime DateTime
- originalData Json
+  id             Int                                   @id @default(autoincrement())
+  userAccountId  Int
+  accountUuid    String
+  conversionId   String                                @unique
+  conversionType CryptoComExchangeDustConversionType
+  status         CryptoComExchangeDustConversionStatus
+  dustCurrency   CurrencyName
+  dustAmount     String
+  toCurrency     CurrencyName
+  toAmount       String
+  createTime     DateTime
+  updateTime     DateTime
+  originalData   Json
 }
 
 enum NexoTransactionType {
- Deposit
- LockingTermDeposit
- Exchange
- DepositToExchange
- ExchangeDepositedOn
- ExchangeCashback
- UnlockingTermDeposit
- Interest
- FixedTermInterest
- TransferOut
- TransferIn
- CreditCardStatus
- Cashback
- Liquidation
- Repayment
- Withdrawal
- Administrator
- CreditCardOverdraftAuthorization
- InterestAdditional
- WithdrawalCredit
+  Deposit
+  LockingTermDeposit
+  Exchange
+  DepositToExchange
+  ExchangeDepositedOn
+  ExchangeCashback
+  UnlockingTermDeposit
+  Interest
+  FixedTermInterest
+  TransferOut
+  TransferIn
+  CreditCardStatus
+  Cashback
+  Liquidation
+  Repayment
+  Withdrawal
+  Administrator
+  CreditCardOverdraftAuthorization
+  InterestAdditional
+  WithdrawalCredit
 }
 
 model NexoTransaction {
- id Int @id @default(autoincrement())
- userAccountId Int
- transactionId String @unique
- type NexoTransactionType
- inputCurrency CurrencyName
- inputAmount Float
- outputCurrency CurrencyName?
- outputAmount Float
- usdEquivalent Float
- details String
- dateTime DateTime
- originalData Json
+  id             Int                 @id @default(autoincrement())
+  userAccountId  Int
+  transactionId  String              @unique
+  type           NexoTransactionType
+  inputCurrency  CurrencyName
+  inputAmount    Float
+  outputCurrency CurrencyName?
+  outputAmount   Float
+  usdEquivalent  Float
+  details        String
+  dateTime       DateTime
+  originalData   Json
 }
 
 enum LedgerOperationType {
- IN
- OUT
- FEES
- NFT_IN
+  IN
+  OUT
+  FEES
+  NFT_IN
 }
 
 model LedgerOperation {
- id Int @id @default(autoincrement())
- operationDate DateTime
- currencyTicker CurrencyName
- operationType LedgerOperationType
- operationAmount String
- operationFees String?
- operationHash String @unique
- accountName String
- accountXpub String
- countervalueTicker CurrencyName
- countervalueAtOperationDate Float
- countervalueAtCsvExport Float
- userAccountId Int
- originalData Json
+  id                          Int                 @id @default(autoincrement())
+  operationDate               DateTime
+  currencyTicker              CurrencyName
+  operationType               LedgerOperationType
+  operationAmount             String
+  operationFees               String?
+  operationHash               String              @unique
+  accountName                 String
+  accountXpub                 String
+  countervalueTicker          CurrencyName
+  countervalueAtOperationDate Float
+  countervalueAtCsvExport     Float
+  userAccountId               Int
+  originalData                Json
 }
 
 enum CoinbaseTransactionType {
- Buy
- Sell
- Convert
- Learning_Reward
- Rewards_Income
+  Buy
+  Sell
+  Convert
+  Learning_Reward
+  Rewards_Income
 }
 
 model CoinbaseTransaction {
- id Int @id @default(autoincrement())
- userAccountId Int
- timestamp DateTime @unique
- transactionType CoinbaseTransactionType
- asset CurrencyName
- quantityTransacted String
- spotPriceCurrency CurrencyName
- spotPriceAtTransaction String
- subtotal String
- totalInclusiveOfFeesAndOrSpread String
- feesAndOrSpread String
- notes String
- originalData Json
+  id                              Int                     @id @default(autoincrement())
+  userAccountId                   Int
+  timestamp                       DateTime                @unique
+  transactionType                 CoinbaseTransactionType
+  asset                           CurrencyName
+  quantityTransacted              String
+  spotPriceCurrency               CurrencyName
+  spotPriceAtTransaction          String
+  subtotal                        String
+  totalInclusiveOfFeesAndOrSpread String
+  feesAndOrSpread                 String
+  notes                           String
+  originalData                    Json
 }

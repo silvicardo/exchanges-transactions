@@ -5,6 +5,7 @@ import * as sellSelectors from "./sell";
 import * as stakingSelectors from "./staking";
 import * as adminSelectors from "./admin";
 import * as giftSelectors from "./gift";
+import * as dustConversionSelectors from "./dust_conversion";
 export const selectors = {
   deposits: depositsSelectors,
   withdrawals: withdrawalsSelectors,
@@ -13,4 +14,5 @@ export const selectors = {
   staking: stakingSelectors,
   admin: adminSelectors,
   gift: giftSelectors,
+  dust_conversion: dustConversionSelectors,
 };

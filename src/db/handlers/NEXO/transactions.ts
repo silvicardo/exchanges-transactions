@@ -1,4 +1,3 @@
-
 import { convertCSVtoJSON } from "../../../../convertCSVtoJSON";
 import { Prisma, CurrencyName, NexoTransactionType } from "@prisma/client";
 import prisma from "../../../../client";
@@ -47,9 +46,9 @@ const parse = (input: CsvInput): Parsed => {
   };
 };
 const store = async ({
-                       parsed,
-                       userAccountId,
-                     }: {
+  parsed,
+  userAccountId,
+}: {
   parsed: Parsed[];
   userAccountId: number;
 }) =>
@@ -72,9 +71,9 @@ const store = async ({
   );
 
 export const handle = async ({
-                               year,
-                               userAccountId,
-                             }: {
+  year,
+  userAccountId,
+}: {
   year: "2021" | "2022" | "2023";
   userAccountId: number;
 }) => {

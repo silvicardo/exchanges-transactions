@@ -64,31 +64,60 @@ const store = async ({
 }: {
   parsed: Parsed[];
   userAccountId: number;
-}) =>
-  Promise.all(
-    parsed.map(async ({ originalData, ...trans }) => {
+}) => {
+  //TODO:: should be batched but got to find a way to fix postgres count issue
+  for (let i = 0; i < parsed.length; i++) {
+    const { originalData, ...trans } = parsed[i];
+
+    const timestampUtc = new Date(trans.timestampUtc).toISOString();
+    const data = {
+      ...trans,
+      timestampUtc,
+      originalData: [originalData] as Prisma.JsonArray,
+      userAccountId: userAccountId,
+    };
+    const result = await prisma.cryptoComCryptoTransaction.findFirst({
+      where: {
+        AND: [
+          { timestampUtc: timestampUtc },
+          { currency: trans.currency },
+          { transactionKind: trans.transactionKind },
+        ],
+      },
+    });
+
+    if (result) {
       console.log(
-        "Adding CryptoComApp crypto transaction > txn",
-        `${trans.transactionKind} ${trans.transactionDescription}`
+        "Updating CryptoComApp crypto transaction > txn",
+        `${trans.transactionKind} ${trans.transactionDescription} > id: ${result.id}`
       );
-      const timestampUtc = new Date(trans.timestampUtc).toISOString();
-      const data = {
-        ...trans,
-        timestampUtc,
-        originalData: [originalData] as Prisma.JsonArray,
-        userAccountId: userAccountId,
-      };
-      const { id } = await prisma.cryptoComCryptoTransaction.upsert({
-        where: { timestampUtc: timestampUtc },
-        create: data,
-        update: data,
+      await prisma.cryptoComCryptoTransaction.update({
+        where: { id: result.id },
+        data: data,
+      });
+    } else {
+      //this picks the highest id and increments it by 1
+      const {
+        _max: { id: maxId },
+      } = await prisma.cryptoComCryptoTransaction.aggregate({
+        _max: { id: true },
+      });
+
+      console.log(
+        "Create Attempt CryptoComApp crypto transaction > txn",
+        `${trans.transactionKind} ${trans.transactionDescription} ${trans.amount}`
+      );
+      const { id } = await prisma.cryptoComCryptoTransaction.create({
+        data: { ...data, id: (maxId ?? 0) + 1 },
       });
       console.log(
-        "Adding CryptoComApp crypto transaction > txn",
+        "Created CryptoComApp crypto transaction > txn",
         `${trans.transactionKind} ${trans.transactionDescription} > id: ${id}`
       );
-    })
-  );
+    }
+  }
+  return;
+};
 
 export const handle = async ({
   year,

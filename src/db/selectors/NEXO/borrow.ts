@@ -81,6 +81,7 @@ export const getFiat = ({
           "CreditCardStatus",
           "CreditCardOverdraftAuthorization",
           "WithdrawalCredit",
+          "NexoCardPurchase"
         ],
       },
       details: {

@@ -346,7 +346,7 @@ enum CryptoComCryptoTransactionKind {
 model CryptoComCryptoTransaction {
   id                     Int                            @id @default(autoincrement())
   userAccountId          Int
-  timestampUtc           DateTime                       @unique
+  timestampUtc           DateTime
   transactionDescription String
   currency               CurrencyName
   amount                 Float
@@ -358,6 +358,8 @@ model CryptoComCryptoTransaction {
   transactionKind        CryptoComCryptoTransactionKind
   transactionHash        String?
   originalData           Json
+
+  @@unique([timestampUtc, transactionKind, currency])
 }
 
 enum CryptoComCardCurrency {

@@ -5,9 +5,9 @@ import {
   coinbaseSchema,
   cryptoComAppSchema,
   cryptoComExchangeSchema,
-  ledgerSchema,
+  ledgerSchema, nexoProSchema,
   nexoSchema,
-  ypSchema,
+  ypSchema
 } from "@/src/app/import/validation";
 
 export const clientValidationSchema = z.discriminatedUnion("exchange", [
@@ -15,6 +15,7 @@ export const clientValidationSchema = z.discriminatedUnion("exchange", [
   bitpandaSchema.extend({ file: z.instanceof(File) }),
   bitpandaProSchema.extend({ file: z.instanceof(File) }),
   nexoSchema.extend({ file: z.instanceof(File) }),
+  nexoProSchema.extend({ file: z.instanceof(File) }),
   cryptoComAppSchema.extend({ file: z.instanceof(File) }),
   cryptoComExchangeSchema.extend({ file: z.instanceof(File) }),
   ledgerSchema.extend({ file: z.instanceof(File) }),

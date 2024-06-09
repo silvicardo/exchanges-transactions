@@ -32,6 +32,10 @@ export const nexoSchema = baseSchema.extend({
   exchange: z.literal(exchangeEnum.enum.NEXO),
   filename: z.enum(EXCHANGE_FILENAME_OPTIONS[exchangeEnum.enum.NEXO]),
 });
+export const nexoProSchema = baseSchema.extend({
+  exchange: z.literal(exchangeEnum.enum.NEXO_PRO),
+  filename: z.enum(EXCHANGE_FILENAME_OPTIONS[exchangeEnum.enum.NEXO_PRO]),
+});
 
 export const cryptoComAppSchema = baseSchema.extend({
   exchange: z.literal(exchangeEnum.enum.CRYPTO_COM_APP),

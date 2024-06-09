@@ -98,6 +98,16 @@ export const importExchangeData = async (exchangeData: FormData) => {
           });
         }
         break;
+        case "NEXO_PRO":
+        if (database.handlers.nexoPro.hasOwnProperty(filename)) {
+          await database.handlers.nexoPro[
+            filename as keyof typeof database.handlers.nexoPro
+          ]({
+            year,
+            userAccountId: FAKE_USER_ACCOUNT_ID,
+          });
+        }
+        break;
       case "CRYPTO_COM_APP":
         if (database.handlers.cryptoComApp.hasOwnProperty(filename)) {
           await database.handlers.cryptoComApp[

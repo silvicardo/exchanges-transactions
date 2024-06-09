@@ -6,6 +6,7 @@ export const EXCHANGE_OPTIONS = [
   "CRYPTO_COM_EXCHANGE",
   "YOUNG_PLATFORM",
   "NEXO",
+  "NEXO_PRO",
   "LEDGER",
   "COINBASE",
 ] as const;
@@ -21,6 +22,7 @@ export const EXCHANGE_FILENAME_OPTIONS = {
   CRYPTO_COM_EXCHANGE: ["dust_conversions"] as const,
   YOUNG_PLATFORM: ["buy_sell_swap", "deposit_withdraw_fee_order"] as const,
   NEXO: ["transactions"] as const,
+  NEXO_PRO: ["spot_transactions"] as const,
   LEDGER: ["operations"] as const,
   COINBASE: ["transactions"] as const,
 } satisfies Record<string, readonly string[]>;

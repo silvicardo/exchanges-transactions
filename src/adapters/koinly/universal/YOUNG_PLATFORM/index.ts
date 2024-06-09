@@ -5,6 +5,7 @@ import { handle as handleAdmin } from "./admin";
 import { handle as handleGift } from "./gift";
 import { handle as handleTradeBuy } from "./trade_buy";
 import { handle as handleTradeSell } from "./trade_sell";
+import { handle as handleDustConversion } from "./dust_conversions";
 import { database } from "@/src/db";
 import { orderBy } from "lodash";
 import { convertJSONtoCSV } from "@/convertJSONtoCSV";
@@ -18,6 +19,7 @@ export const handle = async () => {
   const dbBuyTrades = await selectors.buy.getAll();
 
   const dbSellTrades = await selectors.sell.getAll();
+  const dbDustConversionMovements = await selectors.dust_conversion.getAll();
 
   const dbGiftsMovements = await selectors.gift.getAll();
   const dbStakingMovements = await selectors.staking.getAll();
@@ -32,8 +34,10 @@ export const handle = async () => {
     ...handleGift(dbGiftsMovements),
     ...dbBuyTrades.map(handleTradeBuy),
     ...dbSellTrades.map(handleTradeSell),
+    ...dbDustConversionMovements.map(handleDustConversion),
   ];
-  const sorted = orderBy(entries, [(obj) => new Date(obj.Date)], ["asc"]);
+  const sorted = orderBy(entries, [
+    (obj) => new Date(obj.Date)], ["asc"]);
 
   return convertJSONtoCSV(
     sorted,

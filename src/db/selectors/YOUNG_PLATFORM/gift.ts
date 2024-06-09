@@ -8,7 +8,7 @@ export const getAll = ({
 }> = {}): PrismaPromise<YoungPlatformMovement[]> => {
   return prisma.youngPlatformMovement.findMany({
     where: {
-      OR: [{ txType: "GIFTCARD_STEPDROP" }, { txType: "REFERRAL" }],
+      OR: [{ txType: "GIFTCARD_STEPDROP" }, { txType: "REFERRAL" }, { txType: "PROMO_WALLET" }],
       ...(timestamp
         ? { date: queryUtils.getTimespanQueryObject(timestamp) }
         : {}),

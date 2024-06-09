@@ -467,6 +467,14 @@ enum NexoTransactionType {
   CreditCardOverdraftAuthorization
   InterestAdditional
   WithdrawalCredit
+  NexoCardPurchase
+  LoanWithdrawal
+  TopupCrypto
+  ExchangeCollateral
+  TransferFromProWallet
+  TransferToProWallet
+  ManualRepayment
+  ManualSellOrder
 }
 
 model NexoTransaction {

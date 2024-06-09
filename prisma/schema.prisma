@@ -446,6 +446,43 @@ model CryptoComExchangeDustConversion {
   originalData   Json
 }
 
+enum NexoProSpotTransactionSide {
+  buy
+  sell
+}
+
+enum NexoProSpotTransactionType {
+  market
+}
+
+enum NexoProSpotTransactionStatus {
+  completed
+}
+
+model NexoProSpotTransaction {
+  id              Int                          @id @default(autoincrement())
+  userAccountId   Int
+  transactionId   Int                          @unique
+  pair            String
+  side            NexoProSpotTransactionSide
+  type            NexoProSpotTransactionType
+  price           Float
+  executedPrice   Float
+  triggerPrice    Float?
+  requestedAmount Float
+  filledAmount    Float
+  tradingFee      Float
+  feeCurrency     CurrencyName
+  status          NexoProSpotTransactionStatus
+  orderId         String
+  dateTime        DateTime
+  originalData    Json
+}
+
+// No margin or deposit or withdrawal transactions
+// Only spot transactions, withdrawals and deposits are only crypto to crypto
+// so outside of the scope of this project
+
 enum NexoTransactionType {
   Deposit
   LockingTermDeposit

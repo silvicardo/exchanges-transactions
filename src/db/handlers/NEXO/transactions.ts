@@ -1,20 +1,26 @@
-import { convertCSVtoJSON } from "../../../../convertCSVtoJSON";
-import { Prisma, CurrencyName, NexoTransactionType } from "@prisma/client";
+import { convertCSVtoJSON } from "@/convertCSVtoJSON";
+import { Prisma, CurrencyName, NexoProSpotTransactionType, NexoProSpotTransactionSide, NexoProSpotTransactionStatus  } from "@prisma/client";
 import prisma from "../../../../client";
 
 type CsvInput = {
-  Transaction: string;
-  Type: NexoTransactionType;
-  "Input Currency": CurrencyName;
-  "Input Amount": number;
-  "Output Currency": CurrencyName;
-  "Output Amount": number;
-  "USD Equivalent": `$${number}`;
-  Details: string;
-} & ({"Date / Time (UTC)": string} | {"Date / Time": string});
+  id: number;
+  timestamp: string;
+  pair: `${CurrencyName}/${CurrencyName}`;
+  side: NexoProSpotTransactionSide;
+  type: NexoProSpotTransactionType
+  price: number;
+  executedPrice: number;
+  triggerPrice: number | null;
+  requestedAmount: number;
+  filledAmount: number;
+  tradingFee: number;
+  feeCurrency: CurrencyName;
+  status: NexoProSpotTransactionStatus;
+  orderId: string
+}
 
 type Parsed = Omit<
-  Prisma.NexoTransactionCreateInput,
+  Prisma.NexoProSpotTransactionCreateInput,
   "id" | "userAccountId" | "originalData"
 > & {
   originalData: string;
@@ -22,25 +28,13 @@ type Parsed = Omit<
 
 const parse = (input: CsvInput): Parsed => {
   const {
-    Transaction: transactionId,
-    Type: type,
-    "Input Currency": inputCurrency,
-    "Input Amount": inputAmount,
-    "Output Currency": outputCurrency,
-    "Output Amount": outputAmount,
-    "USD Equivalent": usdEquivalent,
-    Details: details
+    id: transactionId,
+    timestamp:dateTime,
+    ...rest
   } = input;
-  const dateTime = "Date / Time (UTC)" in input ? input["Date / Time (UTC)"] : input["Date / Time"];
   return {
+    ...rest,
     transactionId,
-    type: type.split(' ').join('') as NexoTransactionType,
-    inputCurrency,
-    inputAmount,
-    outputCurrency,
-    outputAmount,
-    usdEquivalent: Number(usdEquivalent.replace("$", "")),
-    details,
     dateTime: new Date(dateTime).toISOString(),
     originalData: JSON.stringify(input),
   };
@@ -54,19 +48,19 @@ const store = async ({
 }) =>
   Promise.all(
     parsed.map(async ({ originalData, ...trans }) => {
-      console.log("Adding Nexo Transaction > txnId", trans.transactionId);
+      console.log("Adding Nexo Pro Spot Transaction > txnId", trans.transactionId);
       const data = {
         ...trans,
         originalData: [originalData] as Prisma.JsonArray,
         userAccountId: userAccountId,
       };
 
-      await prisma.nexoTransaction.upsert({
+      await prisma.nexoProSpotTransaction.upsert({
         where: { transactionId: trans.transactionId },
         create: data,
         update: data,
       });
-      console.log("Added Nexo Transaction > txnId", trans.transactionId);
+      console.log("Added Nexo Pro Transaction > txnId", trans.transactionId);
     })
   );
 
@@ -78,7 +72,7 @@ export const handle = async ({
   userAccountId: number;
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(
-    `${year}/NEXO/transactions.csv`
+    `${year}/NEXO_PRO/spot_transactions.csv`
   );
   const parsed = csvJsonData.map(parse);
   return store({

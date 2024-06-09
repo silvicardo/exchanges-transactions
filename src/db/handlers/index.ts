@@ -6,6 +6,7 @@ import { handlers as nexo } from "./NEXO";
 import { handlers as ledger } from "./LEDGER";
 import { handlers as coinbase } from "./COINBASE";
 import { handlers as cryptoComExchange } from "./CRYPTO_COM_EXCHANGE";
+import { handlers as nexoPro } from "./NEXO_PRO";
 
 export const handlers = {
   youngPlatform,
@@ -16,4 +17,5 @@ export const handlers = {
   nexo,
   ledger,
   coinbase,
+  nexoPro
 };

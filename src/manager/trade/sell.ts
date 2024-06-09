@@ -76,6 +76,15 @@ export const getSellToFiatOperations = async (
     return acc + amount;
   }, 0);
 
+  const nexoPro = ( await selectors.nexoPro.spot_trade.getForPair({
+    pair: `${crypto}_EUR`,
+    side: "sell",
+    timestamp,
+  })).reduce((acc, curr) => {
+    const amount = Math.abs(curr.filledAmount);
+    return acc + amount;
+  },0)
+
   return {
     config,
     account: {
@@ -85,6 +94,7 @@ export const getSellToFiatOperations = async (
       cryptoComApp,
       cryptoComExchange,
       nexo,
+      nexoPro
     },
     total:
       bitpanda +
@@ -92,6 +102,6 @@ export const getSellToFiatOperations = async (
       youngPlatform +
       cryptoComApp +
       nexo +
-      cryptoComExchange,
+      cryptoComExchange + nexoPro,
   };
 };

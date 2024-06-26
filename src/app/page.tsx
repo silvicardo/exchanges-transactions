@@ -31,14 +31,14 @@ const Borrowed = async ({ timestamp }: QueryConfig) => {
   );
 };
 
-const Repayed = async ({ timestamp }: QueryConfig) => {
+const Repayed = async ({ gte, lte }: QueryTimespan) => {
   const lastYearRepayed = await database.selectors.nexo.borrow.getLiquidations({
-    timestamp: timestamp,
+    timestamp: { gte, lte },
   });
   return (
     <Amount
       amount={lastYearRepayed.reduce((acc, t) => acc + t.usdEquivalent, 0)}
-      label={`Fiat Equivalent Repayed`}
+      label={`Fiat Equivalent Repayed USD`}
       currencySymbol={"USD"}
     />
   );
@@ -104,7 +104,7 @@ export default async function Home() {
             <Card>
               <CardBody>
                 <Suspense fallback={<Skeleton height={"57px"} />}>
-                  <Repayed timestamp={getYearTimestamp(year)} />
+                  <Repayed {...getYearTimestamp(year)} />
                 </Suspense>
               </CardBody>
             </Card>

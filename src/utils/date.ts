@@ -1,7 +1,9 @@
+import { endOfYear, startOfYear } from "date-fns";
+
 export const getYearTimestamp = (year: number) => {
   return {
-    gte: new Date(`${year}-01-01`),
-    lte: new Date(`${year}-12-31`),
+    gte: startOfYear(new Date(year, 0, 1)),
+    lte: endOfYear(new Date(year, 11, 31)),
   };
 };
 

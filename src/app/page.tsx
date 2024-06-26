@@ -31,9 +31,9 @@ const Borrowed = async ({ timestamp }: QueryConfig) => {
   );
 };
 
-const Repayed = async ({ gte, lte }: QueryTimespan) => {
+const Repayed = async ({ timestamp }: QueryConfig) => {
   const lastYearRepayed = await database.selectors.nexo.borrow.getLiquidations({
-    timestamp: { gte, lte },
+    timestamp: timestamp,
   });
   return (
     <Amount
@@ -104,7 +104,7 @@ export default async function Home() {
             <Card>
               <CardBody>
                 <Suspense fallback={<Skeleton height={"57px"} />}>
-                  <Repayed {...getYearTimestamp(year)} />
+                  <Repayed timestamp={getYearTimestamp(year)} />
                 </Suspense>
               </CardBody>
             </Card>

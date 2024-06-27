@@ -13,16 +13,31 @@ export const getLiquidations = ({
 }: LiquidationQueryConfig) => {
   return prisma.nexoTransaction.findMany({
     where: {
-      type: "Liquidation",
-      ...(currency
-        ? { inputCurrency: currency, outputCurrency: currency }
-        : {}),
-      details: {
-        contains: "approved",
-      },
-      ...(timestamp
-        ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
-        : {}),
+      OR: [
+        //this was nexo pre 2023 borrowing repayment csvs way
+        //liquidation was always in EURX, but you can look for other currencies
+        {
+          type: "Liquidation",
+          details: {
+            contains: "approved",
+          },
+          ...(timestamp
+            ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
+            : {}),
+        },
+        //2023 csvs way
+        {
+          type: "ManualRepayment",
+          inputCurrency: "USD",
+          outputCurrency: "USD",
+          details: {
+            contains: "approved",
+          },
+          ...(timestamp
+            ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
+            : {}),
+        },
+      ],
     },
   });
 };
@@ -81,7 +96,7 @@ export const getFiat = ({
           "CreditCardStatus",
           "CreditCardOverdraftAuthorization",
           "WithdrawalCredit",
-          "NexoCardPurchase"
+          "NexoCardPurchase",
         ],
       },
       details: {

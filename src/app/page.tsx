@@ -58,7 +58,7 @@ const Repayed = async ({ timestamp }: QueryConfig) => {
   return (
     <Amount
       amount={lastYearRepayed.reduce((acc, t) => acc + t.usdEquivalent, 0)}
-      label={`Fiat Equivalent Repayed USD`}
+      label={`Fiat Equivalent Repayed`}
       currencySymbol={"USD"}
     >
       <StatNumber>

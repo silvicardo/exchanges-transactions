@@ -23,7 +23,7 @@ const Borrowed = async ({ timestamp }: QueryConfig) => {
   return (
     <>
       <Amount
-        amount={data.reduce((acc, t) => acc + Math.abs(t.inputAmount), 0)}
+        amount={data.reduce((acc, t) => acc + Math.abs(t.outputAmount), 0)}
         label={`Borrowed`}
         currencySymbol={"EUR"}
       />

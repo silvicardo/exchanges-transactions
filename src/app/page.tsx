@@ -6,6 +6,7 @@ import {
   Skeleton,
   Heading,
   Box,
+  StatNumber,
 } from "@/src/components/chakra";
 import React, { Suspense } from "react";
 import { getYearTimestamp } from "@/src/utils/date";
@@ -23,11 +24,23 @@ const Borrowed = async ({ timestamp }: QueryConfig) => {
     timestamp: timestamp,
   });
   return (
-    <Amount
-      amount={lastYearBorrowed.reduce((acc, t) => acc + t.usdEquivalent, 0)}
-      label={`Fiat Equivalent Borrowed`}
-      currencySymbol={"USD"}
-    />
+    <>
+      <Amount
+        amount={lastYearBorrowed.reduce(
+          (acc, t) => acc + Math.abs(t.outputAmount),
+          0
+        )}
+        label={`Fiat Equivalent Borrowed`}
+        currencySymbol={"EUR"}
+      >
+        <StatNumber>
+          USD{" "}
+          {lastYearBorrowed
+            .reduce((acc, t) => acc + Math.abs(t.usdEquivalent), 0)
+            .toFixed(2)}
+        </StatNumber>
+      </Amount>
+    </>
   );
 };
 

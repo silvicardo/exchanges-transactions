@@ -90,6 +90,9 @@ export const getFiat = ({
 }: {
   timestamp?: Partial<QueryTimespan>;
 }) => {
+  // - output amount is always positive and always EUR -> borrowing part
+  // - input amount is always negative and always USD -> borrowing part
+  // - usdEquivalent is always there and is USD value at the moment of movement
   return prisma.nexoTransaction.findMany({
     where: {
       type: {

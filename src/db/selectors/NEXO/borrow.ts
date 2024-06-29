@@ -7,10 +7,7 @@ type LiquidationQueryConfig = {
   timestamp?: Partial<QueryTimespan>;
 };
 
-export const getLiquidations = ({
-  currency,
-  timestamp,
-}: LiquidationQueryConfig) => {
+export const getLiquidations = ({ timestamp }: LiquidationQueryConfig) => {
   return prisma.nexoTransaction.findMany({
     where: {
       OR: [
@@ -25,11 +22,10 @@ export const getLiquidations = ({
             ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
             : {}),
         },
-        //2023 csvs way
+        //2023 csvs way, we do not care for the currency
+        //usd equivalent will be always there
         {
           type: "ManualRepayment",
-          inputCurrency: "USD",
-          outputCurrency: "USD",
           details: {
             contains: "approved",
           },
@@ -73,7 +69,12 @@ export const getFiatBankTransfer = ({
 }) => {
   return prisma.nexoTransaction.findMany({
     where: {
-      type: "WithdrawalCredit",
+      type: {
+        in: [
+          "WithdrawalCredit",
+          "LoanWithdrawal", //2023 - Nexo to Customer Bank Transfer
+        ],
+      },
       details: {
         contains: "approved",
       },
@@ -96,7 +97,8 @@ export const getFiat = ({
           "CreditCardStatus",
           "CreditCardOverdraftAuthorization",
           "WithdrawalCredit",
-          "NexoCardPurchase",
+          "NexoCardPurchase", // also includes ATM withdrawals displayed on website as "Cash Withdrawal"
+          "LoanWithdrawal", //2023 - Nexo to Customer Bank Transfer
         ],
       },
       details: {

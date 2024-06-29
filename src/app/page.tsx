@@ -8,7 +8,7 @@ import {
   Box,
   StatNumber,
 } from "@/src/components/chakra";
-import React, { Suspense } from "react";
+import React, { Fragment, Suspense } from "react";
 import { getYearTimestamp } from "@/src/utils/date";
 import { Amount } from "@/src/components/amount";
 import Link from "next/link";
@@ -27,16 +27,16 @@ const Borrowed = async ({ timestamp }: QueryConfig) => {
     <>
       <Amount
         amount={lastYearBorrowed.reduce(
-          (acc, t) => acc + Math.abs(t.outputAmount),
+          (acc, t) => acc + Math.abs(t.usdEquivalent),
           0
         )}
         label={`Fiat Equivalent Borrowed`}
-        currencySymbol={"EUR"}
+        currencySymbol={"USD"}
       >
         <StatNumber>
-          USD{" "}
+          EUR{" "}
           {lastYearBorrowed
-            .reduce((acc, t) => acc + Math.abs(t.usdEquivalent), 0)
+            .reduce((acc, t) => acc + Math.abs(t.outputAmount), 0)
             .toFixed(2)}
         </StatNumber>
       </Amount>
@@ -48,12 +48,27 @@ const Repayed = async ({ timestamp }: QueryConfig) => {
   const lastYearRepayed = await database.selectors.nexo.borrow.getLiquidations({
     timestamp: timestamp,
   });
+  const byCurrency = lastYearRepayed.reduce((acc, t) => {
+    if (!acc[t.inputCurrency]) {
+      acc[t.inputCurrency] = 0;
+    }
+    acc[t.inputCurrency] += Math.abs(t.inputAmount);
+    return acc;
+  }, {} as Record<string, number>);
   return (
     <Amount
       amount={lastYearRepayed.reduce((acc, t) => acc + t.usdEquivalent, 0)}
       label={`Fiat Equivalent Repayed USD`}
       currencySymbol={"USD"}
-    />
+    >
+      <StatNumber>
+        {Object.entries(byCurrency).map(([currency, amount], i) => (
+          <Fragment key={currency}>
+            {currency}: {amount.toFixed(2)}{" "}
+          </Fragment>
+        ))}
+      </StatNumber>
+    </Amount>
   );
 };
 

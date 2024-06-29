@@ -10,30 +10,22 @@ type LiquidationQueryConfig = {
 export const getLiquidations = ({ timestamp }: LiquidationQueryConfig) => {
   return prisma.nexoTransaction.findMany({
     where: {
-      OR: [
-        //this was nexo pre 2023 borrowing repayment csvs way
-        //liquidation was always in EURX, but you can look for other currencies
-        {
-          type: "Liquidation",
-          details: {
-            contains: "approved",
-          },
-          ...(timestamp
-            ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
-            : {}),
-        },
-        //2023 csvs way, we do not care for the currency
-        //usd equivalent will be always there
-        {
-          type: "ManualRepayment",
-          details: {
-            contains: "approved",
-          },
-          ...(timestamp
-            ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
-            : {}),
-        },
-      ],
+      type: {
+        in: [
+          //this was nexo pre 2023 borrowing repayment csvs way
+          //liquidation was always in EURX, but you can look for other currencies
+          "Liquidation",
+          //2023 csvs way, we do not care for the currency
+          //usd equivalent will be always there
+          "ManualRepayment",
+        ],
+      },
+      details: {
+        contains: "approved",
+      },
+      ...(timestamp
+        ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
     },
   });
 };

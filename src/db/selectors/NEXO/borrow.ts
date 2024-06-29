@@ -7,37 +7,25 @@ type LiquidationQueryConfig = {
   timestamp?: Partial<QueryTimespan>;
 };
 
-export const getLiquidations = ({
-  currency,
-  timestamp,
-}: LiquidationQueryConfig) => {
+export const getLiquidations = ({ timestamp }: LiquidationQueryConfig) => {
   return prisma.nexoTransaction.findMany({
     where: {
-      OR: [
-        //this was nexo pre 2023 borrowing repayment csvs way
-        //liquidation was always in EURX, but you can look for other currencies
-        {
-          type: "Liquidation",
-          details: {
-            contains: "approved",
-          },
-          ...(timestamp
-            ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
-            : {}),
-        },
-        //2023 csvs way
-        {
-          type: "ManualRepayment",
-          inputCurrency: "USD",
-          outputCurrency: "USD",
-          details: {
-            contains: "approved",
-          },
-          ...(timestamp
-            ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
-            : {}),
-        },
-      ],
+      type: {
+        in: [
+          //this was nexo pre 2023 borrowing repayment csvs way
+          //liquidation was always in EURX, but you can look for other currencies
+          "Liquidation",
+          //2023 csvs way, we do not care for the currency
+          //usd equivalent will be always there
+          "ManualRepayment",
+        ],
+      },
+      details: {
+        contains: "approved",
+      },
+      ...(timestamp
+        ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
     },
   });
 };
@@ -73,7 +61,12 @@ export const getFiatBankTransfer = ({
 }) => {
   return prisma.nexoTransaction.findMany({
     where: {
-      type: "WithdrawalCredit",
+      type: {
+        in: [
+          "WithdrawalCredit",
+          "LoanWithdrawal", //2023 - Nexo to Customer Bank Transfer
+        ],
+      },
       details: {
         contains: "approved",
       },
@@ -89,6 +82,9 @@ export const getFiat = ({
 }: {
   timestamp?: Partial<QueryTimespan>;
 }) => {
+  // - output amount is always positive and always EUR -> borrowing part
+  // - input amount is always negative and always USD -> borrowing part
+  // - usdEquivalent is always there and is USD value at the moment of movement
   return prisma.nexoTransaction.findMany({
     where: {
       type: {
@@ -96,7 +92,8 @@ export const getFiat = ({
           "CreditCardStatus",
           "CreditCardOverdraftAuthorization",
           "WithdrawalCredit",
-          "NexoCardPurchase",
+          "NexoCardPurchase", // also includes ATM withdrawals displayed on website as "Cash Withdrawal"
+          "LoanWithdrawal", //2023 - Nexo to Customer Bank Transfer
         ],
       },
       details: {

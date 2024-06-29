@@ -16,3 +16,4 @@ export { default as Alert } from "./alert";
 export { default as AlertTitle } from "./alert-title";
 export { default as AlertDescription } from "./alert-description";
 export { default as AlertIcon } from "./alert-icon";
+export { default as StatNumber } from "./stat-number";

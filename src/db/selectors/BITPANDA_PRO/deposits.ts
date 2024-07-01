@@ -10,6 +10,7 @@ import prisma from "../../../../client";
 export const getAllByCurrency = ({
   currency,
   timestamp,
+  timestampOrderBy,
 }: DepositQueryConfig): PrismaPromise<BitpandaProDepositWithdraw[]> => {
   return prisma.bitpandaProDepositWithdraw.findMany({
     // @ts-expect-error
@@ -22,11 +23,15 @@ export const getAllByCurrency = ({
         ? { timeCreated: queryUtils.getTimespanQueryObject(timestamp) }
         : {}),
     },
+    orderBy: { timeCreated: timestampOrderBy ?? "asc" },
   });
 };
 
-export const getFiat = ({ timestamp }: Pick<DepositQueryConfig, "timestamp">) =>
-  getAllByCurrency({ currency: "EUR", timestamp });
+export const getFiat = ({
+  timestamp,
+  timestampOrderBy,
+}: Pick<DepositQueryConfig, "timestamp" | "timestampOrderBy">) =>
+  getAllByCurrency({ currency: "EUR", timestamp, timestampOrderBy });
 
 export const getByCrypto = ({
   currency,

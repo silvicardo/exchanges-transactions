@@ -7,7 +7,9 @@ import AmountsTable from "@/src/components/amounts-table";
 type Props = {
   timestamp: QueryTimespan;
 };
-export default async function Fiat({ timestamp }: Props) {
+export default async function FiatDepositsTotalsByExchange({
+  timestamp,
+}: Props) {
   const deposits = await getFiatDepositOperationsTotal({
     timestamp,
   });

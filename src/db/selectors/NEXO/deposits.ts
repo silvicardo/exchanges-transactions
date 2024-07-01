@@ -5,7 +5,10 @@ import prisma from "../../../../client";
 
 export const getAllFiat = ({
   timestamp,
-}: Pick<DepositQueryConfig, "timestamp">): PrismaPromise<NexoTransaction[]> => {
+  timestampOrderBy,
+}: Pick<DepositQueryConfig, "timestamp" | "timestampOrderBy">): PrismaPromise<
+  NexoTransaction[]
+> => {
   return prisma.nexoTransaction.findMany({
     where: {
       type: "DepositToExchange",
@@ -15,6 +18,7 @@ export const getAllFiat = ({
         ? { dateTime: queryUtils.getTimespanQueryObject(timestamp) }
         : {}),
     },
+    orderBy: { dateTime: timestampOrderBy ?? "asc" },
   });
 };
 

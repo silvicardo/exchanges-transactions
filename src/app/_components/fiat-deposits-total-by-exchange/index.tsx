@@ -7,7 +7,9 @@ import AmountsTable from "@/src/components/amounts-table";
 type Props = {
   timestamp: QueryTimespan;
 };
-export default async function Fiat({ timestamp }: Props) {
+export default async function FiatDepositsTotalsByExchange({
+  timestamp,
+}: Props) {
   const deposits = await getFiatDepositOperationsTotal({
     timestamp,
   });
@@ -20,6 +22,7 @@ export default async function Fiat({ timestamp }: Props) {
         label={"Total EUR Deposits"}
         currencySymbol={"€"}
       />
+
       <AmountsTable
         caption={"EUR deposited by exchange"}
         dataKeyHead={"exchange"}

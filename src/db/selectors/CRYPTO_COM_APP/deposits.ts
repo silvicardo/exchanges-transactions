@@ -10,7 +10,8 @@ import prisma from "../../../../client";
 
 export const getAllFiat = ({
   timestamp,
-}: Pick<DepositQueryConfig, "timestamp">): PrismaPromise<
+  timestampOrderBy,
+}: Pick<DepositQueryConfig, "timestamp" | "timestampOrderBy">): PrismaPromise<
   CryptoComFiatTransaction[]
 > => {
   return prisma.cryptoComFiatTransaction.findMany({
@@ -23,6 +24,7 @@ export const getAllFiat = ({
         ? { timestampUtc: queryUtils.getTimespanQueryObject(timestamp) }
         : {}),
     },
+    orderBy: { timestampUtc: timestampOrderBy ?? "asc" },
   });
 };
 

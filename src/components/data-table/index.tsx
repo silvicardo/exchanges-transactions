@@ -11,6 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { isDate } from "lodash";
+import { format } from "date-fns";
 
 type BaseDataEntry = {
   id: number;
@@ -42,7 +43,11 @@ export default function DataTable<K extends BaseDataEntry = BaseDataEntry>({
             );
           }
           if (isDate(value)) {
-            return <Td key={`${row.id}-${name}`}>{value.toLocaleString()}</Td>;
+            return (
+              <Td key={`${row.id}-${name}`}>
+                {format(new Date(value), "dd-MM-yyyy")}
+              </Td>
+            );
           }
           return <Td key={`${row.id}-${name}`}>{value.toString()}</Td>;
         })}
@@ -55,7 +60,7 @@ export default function DataTable<K extends BaseDataEntry = BaseDataEntry>({
         <TableCaption>{caption}</TableCaption>
         <Thead>
           <Tr>
-            {Object.keys(data[0]).map((key) => (
+            {Object.keys(data[0] ?? {}).map((key) => (
               <Th key={key}>{key}</Th>
             ))}
           </Tr>

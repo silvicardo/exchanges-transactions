@@ -7,8 +7,8 @@ import {
   Card,
   CardBody,
 } from "@/src/components/chakra";
-import Fiat from "@/src/app/fiat-deposit/fiat";
 import { getYearTimestamp } from "@/src/utils/date";
+import FiatDepositsTotalsByExchange from "@/src/app/_components/fiat-deposits-total-by-exchange";
 
 export default async function Deposit() {
   return (
@@ -21,35 +21,45 @@ export default async function Deposit() {
         <Card>
           <CardBody>
             <Suspense fallback={<Skeleton height={"445px"} />}>
-              <Fiat timestamp={getYearTimestamp(2020)} />
+              <FiatDepositsTotalsByExchange
+                timestamp={getYearTimestamp(2020)}
+              />
             </Suspense>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
             <Suspense fallback={<Skeleton height={"445px"} />}>
-              <Fiat timestamp={getYearTimestamp(2021)} />
+              <FiatDepositsTotalsByExchange
+                timestamp={getYearTimestamp(2021)}
+              />
             </Suspense>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
             <Suspense fallback={<Skeleton height={"445px"} />}>
-              <Fiat timestamp={getYearTimestamp(2022)} />
+              <FiatDepositsTotalsByExchange
+                timestamp={getYearTimestamp(2022)}
+              />
             </Suspense>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
             <Suspense fallback={<Skeleton height={"445px"} />}>
-              <Fiat timestamp={getYearTimestamp(2023)} />
+              <FiatDepositsTotalsByExchange
+                timestamp={getYearTimestamp(2023)}
+              />
             </Suspense>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
             <Suspense fallback={<Skeleton height={"445px"} />}>
-              <Fiat timestamp={getYearTimestamp(2024)} />
+              <FiatDepositsTotalsByExchange
+                timestamp={getYearTimestamp(2024)}
+              />
             </Suspense>
           </CardBody>
         </Card>

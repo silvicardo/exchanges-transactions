@@ -23,6 +23,7 @@ export const getAll = ({
  */
 export const getFiat = ({
   timestamp,
+  timestampOrderBy,
 }: Omit<DepositQueryConfig, "currency"> = {}): PrismaPromise<
   BitpandaTrade[]
 > => {
@@ -35,5 +36,6 @@ export const getFiat = ({
         ? { timestamp: queryUtils.getTimespanQueryObject(timestamp) }
         : {}),
     },
+    orderBy: { timestamp: timestampOrderBy ?? "asc" },
   });
 };

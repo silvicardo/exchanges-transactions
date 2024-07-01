@@ -12,4 +12,5 @@ export type TradeQueryConfig = {
 export type DepositQueryConfig = {
   currency: CurrencyName;
   timestamp?: Partial<QueryTimespan>;
+  timestampOrderBy?: "asc" | "desc";
 };

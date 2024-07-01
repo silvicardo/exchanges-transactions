@@ -11,7 +11,8 @@ export const getAll = (): PrismaPromise<YoungPlatformMovement[]> => {
 
 export const getAllFiat = ({
   timestamp,
-}: Pick<DepositQueryConfig, "timestamp">): PrismaPromise<
+  timestampOrderBy,
+}: Pick<DepositQueryConfig, "timestamp" | "timestampOrderBy">): PrismaPromise<
   YoungPlatformMovement[]
 > => {
   return prisma.youngPlatformMovement.findMany({
@@ -22,5 +23,6 @@ export const getAllFiat = ({
         ? { date: queryUtils.getTimespanQueryObject(timestamp) }
         : {}),
     },
+    orderBy: { date: timestampOrderBy ?? "asc" },
   });
 };

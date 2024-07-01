@@ -1,4 +1,4 @@
-export const YEAR_OPTIONS = ["2021", "2022", "2023"] as const;
+export const YEAR_OPTIONS = ["2021", "2022", "2023", "2024"] as const;
 export const EXCHANGE_OPTIONS = [
   "BITPANDA",
   "BITPANDA_PRO",

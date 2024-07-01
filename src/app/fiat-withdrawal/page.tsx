@@ -38,6 +38,13 @@ export default async function Deposit() {
             </Suspense>
           </CardBody>
         </Card>
+        <Card>
+          <CardBody>
+            <Suspense fallback={<Skeleton height={"445px"} />}>
+              <Fiat timestamp={getYearTimestamp(2024)} />
+            </Suspense>
+          </CardBody>
+        </Card>
       </SimpleGrid>
     </Box>
   );

@@ -8,7 +8,7 @@ import {
 } from "@/src/components/chakra";
 import Link from "next/link";
 
-const YEARS = ["2021", "2022", "2023"];
+const YEARS = ["2021", "2022", "2023", "2024"];
 export default async function Report() {
   return (
     <VStack spacing={8} width={"100%"}>

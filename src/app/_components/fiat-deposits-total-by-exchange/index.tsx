@@ -22,6 +22,7 @@ export default async function FiatDepositsTotalsByExchange({
         label={"Total EUR Deposits"}
         currencySymbol={"€"}
       />
+
       <AmountsTable
         caption={"EUR deposited by exchange"}
         dataKeyHead={"exchange"}

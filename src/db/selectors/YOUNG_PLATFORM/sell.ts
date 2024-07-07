@@ -16,6 +16,21 @@ export const getAll = ({
     },
   });
 };
+
+export const getAllToFiat = ({
+  timestamp,
+}: Partial<{ timestamp: Partial<QueryTimespan> }>) => {
+  return prisma.youngPlatformTrade.findMany({
+    where: {
+      side: "SELL",
+      quote: "EUR",
+      ...(timestamp
+        ? { date: queryUtils.getTimespanQueryObject(timestamp) }
+        : {}),
+    },
+  });
+};
+
 export const getForPair = (
   config: Omit<TradeQueryConfig, "side">
 ): PrismaPromise<YoungPlatformTrade[]> => {

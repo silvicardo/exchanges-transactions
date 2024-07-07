@@ -10,15 +10,22 @@ import {
   Box,
   CardHeader,
   HStack,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@/src/components/chakra";
-import React, { Suspense } from "react";
+import React, { Fragment, Suspense } from "react";
 import { CRYPTO_CURRENCIES } from "@/src/constants";
 import { getSellToFiatOperations } from "@/src/manager/trade/sell";
 import { getYearTimestamp } from "@/src/utils/date";
 import { CryptoCurrency } from "@/src/types";
 import { DownloadForm } from "@/src/app/_components/fiat-deposit-list-by-exchange/download-form";
 import DataTable from "@/src/components/data-table";
-import { selectors } from "@/src/db/selectors";
 import { database } from "@/src/db";
 
 async function getSellToFiatOperationTotals(year: number) {
@@ -39,12 +46,118 @@ async function getSellToFiatOperationTotals(year: number) {
   return { aggregated, byCryptoWithAmount };
 }
 
+const DownloadSalesCsvButton = async ({
+  timestamp,
+  exchangeName,
+}: {
+  exchangeName: string;
+  timestamp: { gte: Date; lte: Date };
+}) => {
+  let data: string | any[] = [];
+  if (exchangeName === "youngPlatform") {
+    data = (
+      await database.selectors.youngPlatform.sell.getAllToFiat({
+        timestamp,
+      })
+    ).map(
+      ({
+        id,
+        side,
+        rate,
+        volume,
+        quote,
+        amount,
+        base,
+        brokerage,
+        brokerageCurrency,
+        date,
+        originalData,
+      }) => ({
+        id,
+        pair: `${base}_${quote}`,
+        side,
+        rate,
+        volume,
+        amount,
+        fees: `${brokerage} ${brokerageCurrency}`,
+        date,
+        originalData,
+      })
+    );
+  }
+  if (data.length === 0) return null;
+  return (
+    <DownloadForm
+      stringifiedData={JSON.stringify(data)}
+      fileName={`${exchangeName}_sales_to_fiat_${timestamp.lte.getFullYear()}`}
+      ctaText={"Download CSV"}
+    />
+  );
+};
+
+const AggregatedTable = async ({
+  account,
+  timestamp,
+}: {
+  account: Record<string, number>;
+  timestamp: {
+    gte: Date;
+    lte: Date;
+  };
+}) => {
+  return (
+    <TableContainer>
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>Exchange</Th>
+            <Th isNumeric>Total</Th>
+            <Th>CSV</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {Object.entries(account).map(([name, total]) => (
+            <Fragment key={name}>
+              {(total as number) > 0 ? (
+                <Tr key={name}>
+                  <Td>{name}</Td>
+                  <Td isNumeric>{(total as number).toFixed(2)} EUR</Td>
+                  <Td>
+                    <Suspense fallback={<Skeleton height={"35px"} />}>
+                      <DownloadSalesCsvButton
+                        exchangeName={name}
+                        timestamp={timestamp}
+                      />
+                    </Suspense>
+                  </Td>
+                </Tr>
+              ) : null}
+            </Fragment>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
+};
+
 const ContentSection = async ({ year }: { year: number }) => {
-  const { byCryptoWithAmount } = await getSellToFiatOperationTotals(+year);
-  console.log("byCryptoWithAmount", byCryptoWithAmount);
+  const { byCryptoWithAmount, aggregated } = await getSellToFiatOperationTotals(
+    +year
+  );
 
   return (
     <SimpleGrid column={1} spacing={8}>
+      {aggregated ? (
+        <Card>
+          <CardHeader>Aggregated</CardHeader>
+          <Suspense fallback={<Skeleton height={"445px"} />}>
+            <AggregatedTable
+              account={aggregated.account}
+              timestamp={getYearTimestamp(year)}
+            />
+          </Suspense>
+        </Card>
+      ) : null}
       {byCryptoWithAmount.map(
         ({ account, total, config: { crypto, timestamp } }) => (
           <Suspense

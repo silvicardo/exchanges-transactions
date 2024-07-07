@@ -9,6 +9,7 @@ import {
   Skeleton,
   Box,
   CardHeader,
+  HStack,
 } from "@/src/components/chakra";
 import React, { Suspense } from "react";
 import { CRYPTO_CURRENCIES } from "@/src/constants";
@@ -78,6 +79,7 @@ const CryptoExchangeSalesCardContent = async ({
   const { selectors } = database;
   let total = 0;
   let data: any[] = [];
+  let displayData = null;
 
   if (exchangeName === "bitpanda") {
     data = await selectors.bitpanda.trade.getForFiatPair({
@@ -97,12 +99,11 @@ const CryptoExchangeSalesCardContent = async ({
   }
 
   if (exchangeName === "youngPlatform") {
-    data = (
-      await selectors.youngPlatform.sell.getForPair({
-        pair: `${crypto}_EUR`,
-        timestamp,
-      })
-    ).map(
+    data = await selectors.youngPlatform.sell.getForPair({
+      pair: `${crypto}_EUR`,
+      timestamp,
+    });
+    displayData = data.map(
       ({
         id,
         side,
@@ -114,16 +115,14 @@ const CryptoExchangeSalesCardContent = async ({
         brokerage,
         brokerageCurrency,
         date,
-        ...a
       }) => ({
         id,
-        base,
-        quote,
+        pair: `${base}_${quote}`,
         side,
         rate,
+        volume,
         amount,
-        brokerage,
-        brokerageCurrency,
+        fees: `${brokerage} ${brokerageCurrency}`,
         date,
       })
     );
@@ -185,15 +184,19 @@ const CryptoExchangeSalesCardContent = async ({
   return (
     <>
       <CardHeader>
-        {exchangeName} - Total: {total}
-        <DownloadForm
-          stringifiedData={JSON.stringify(data)}
-          fileName={`${exchangeName}_sales_to_fiat_${timestamp.lte.getFullYear()}`}
-          ctaText={"Download CSV"}
-        />
+        <HStack gap={12}>
+          <strong>
+            {exchangeName} - Total: {total}
+          </strong>
+          <DownloadForm
+            stringifiedData={JSON.stringify(data)}
+            fileName={`${exchangeName}_sales_to_fiat_${crypto}_EUR_${timestamp.lte.getFullYear()}`}
+            ctaText={"Download CSV"}
+          />
+        </HStack>
       </CardHeader>
       <CardBody>
-        <DataTable caption={"EUR sales"} data={data} />
+        <DataTable caption={"EUR sales"} data={displayData ?? data} />
       </CardBody>
     </>
   );
@@ -219,7 +222,7 @@ const CryptoSales = async ({
         {crypto} - Total: {total}
       </Heading>
       <SimpleGrid column={1} spacing={6}>
-        {Object.entries(account).map(([exchange, total]) => (
+        {Object.keys(account).map((exchange) => (
           <Card key={exchange}>
             <Suspense key={exchange} fallback={<Skeleton height={"445px"} />}>
               <CryptoExchangeSalesCardContent

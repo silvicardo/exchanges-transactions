@@ -55,7 +55,7 @@ export const handle = async ({
   year,
   userAccountId,
 }: {
-  year: "2021" | "2022" | "2023";
+  year: "2021" | "2022" | "2023" | "2024";
   userAccountId: number;
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(

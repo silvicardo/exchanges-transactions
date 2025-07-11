@@ -5,6 +5,7 @@ export const CRYPTO_CURRENCIES: Exclude<CurrencyName, "EUR" | "USD">[] = [
   "ETH",
   "SOL",
   "MATIC",
+  "POL",
   "DOT",
   "LINK",
   "AVAX",
@@ -69,4 +70,5 @@ export const CRYPTO_CURRENCIES: Exclude<CurrencyName, "EUR" | "USD">[] = [
   "NU",
   "GRT",
   "CGLD",
+  "RENDER",
 ];

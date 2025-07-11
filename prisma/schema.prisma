@@ -460,10 +460,12 @@ enum NexoProSpotTransactionSide {
 
 enum NexoProSpotTransactionType {
   market
+  limit
 }
 
 enum NexoProSpotTransactionStatus {
   completed
+  cancelled
 }
 
 model NexoProSpotTransaction {
@@ -474,12 +476,12 @@ model NexoProSpotTransaction {
   side            NexoProSpotTransactionSide
   type            NexoProSpotTransactionType
   price           Float
-  executedPrice   Float
+  executedPrice   Float?
   triggerPrice    Float?
   requestedAmount Float
-  filledAmount    Float
-  tradingFee      Float
-  feeCurrency     CurrencyName
+  filledAmount    Float?
+  tradingFee      Float?
+  feeCurrency     CurrencyName?
   status          NexoProSpotTransactionStatus
   orderId         String
   dateTime        DateTime

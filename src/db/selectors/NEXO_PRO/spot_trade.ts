@@ -28,7 +28,7 @@ export const getForPair = async (config: TradeQueryConfig) => {
     assetParams = {
       ...assetParams,
       pair: `${quote}/${base}`,
-    }
+    };
   }
 
   if (quote !== "*") {
@@ -36,7 +36,7 @@ export const getForPair = async (config: TradeQueryConfig) => {
       ...assetParams,
       pair: {
         contains: `/${quote}`,
-      }
+      },
     };
   }
 
@@ -52,7 +52,7 @@ export const getForPair = async (config: TradeQueryConfig) => {
 
   return prisma.nexoProSpotTransaction.findMany({
     where: {
-      type: "market",
+      OR: [{ type: "market" }, { type: "limit" }],
       status: "completed",
       side,
       ...assetParams,

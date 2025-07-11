@@ -1,5 +1,11 @@
 import { convertCSVtoJSON } from "@/convertCSVtoJSON";
-import { Prisma, CurrencyName, NexoProSpotTransactionType, NexoProSpotTransactionSide, NexoProSpotTransactionStatus  } from "@prisma/client";
+import {
+  Prisma,
+  CurrencyName,
+  NexoProSpotTransactionType,
+  NexoProSpotTransactionSide,
+  NexoProSpotTransactionStatus,
+} from "@prisma/client";
 import prisma from "../../../../client";
 
 type CsvInput = {
@@ -7,7 +13,7 @@ type CsvInput = {
   timestamp: string;
   pair: `${CurrencyName}/${CurrencyName}`;
   side: NexoProSpotTransactionSide;
-  type: NexoProSpotTransactionType
+  type: NexoProSpotTransactionType;
   price: number;
   executedPrice: number;
   triggerPrice: number | null;
@@ -16,8 +22,8 @@ type CsvInput = {
   tradingFee: number;
   feeCurrency: CurrencyName;
   status: NexoProSpotTransactionStatus;
-  orderId: string
-}
+  orderId: string;
+};
 
 type Parsed = Omit<
   Prisma.NexoProSpotTransactionCreateInput,
@@ -27,11 +33,7 @@ type Parsed = Omit<
 };
 
 const parse = (input: CsvInput): Parsed => {
-  const {
-    id: transactionId,
-    timestamp:dateTime,
-    ...rest
-  } = input;
+  const { id: transactionId, timestamp: dateTime, ...rest } = input;
   return {
     ...rest,
     transactionId,
@@ -48,7 +50,10 @@ const store = async ({
 }) =>
   Promise.all(
     parsed.map(async ({ originalData, ...trans }) => {
-      console.log("Adding Nexo Pro Spot Transaction > txnId", trans.transactionId);
+      console.log(
+        "Adding Nexo Pro Spot Transaction > txnId",
+        trans.transactionId
+      );
       const data = {
         ...trans,
         originalData: [originalData] as Prisma.JsonArray,
@@ -68,7 +73,7 @@ export const handle = async ({
   year,
   userAccountId,
 }: {
-  year: "2021" | "2022" | "2023";
+  year: "2021" | "2022" | "2023" | "2024";
   userAccountId: number;
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(
@@ -80,4 +85,3 @@ export const handle = async ({
     userAccountId,
   });
 };
-

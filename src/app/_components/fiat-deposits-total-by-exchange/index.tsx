@@ -13,7 +13,6 @@ export default async function FiatDepositsTotalsByExchange({
   const deposits = await getFiatDepositOperationsTotal({
     timestamp,
   });
-
   return (
     <>
       <TimespanAmount

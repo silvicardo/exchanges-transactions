@@ -101,7 +101,7 @@ const Withdrawals = async ({ timestamp }: QueryConfig) => {
 export default async function Home() {
   return (
     <>
-      {[2021, 2022, 2023].map((year) => (
+      {[2021, 2022, 2023, 2024].map((year) => (
         <Box key={year} mb={8}>
           <Heading mb={4}>{year}</Heading>
           <SimpleGrid

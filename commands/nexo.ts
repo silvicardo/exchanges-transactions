@@ -5,7 +5,7 @@ import prisma from "../client";
 const processArgv = argv(process.argv.slice(2));
 
 interface Config {
-  year: "2021" | "2022" | "2023";
+  year: "2021" | "2022" | "2023" | "2024";
   type: "transactions";
   account_id: number;
 }

@@ -13,6 +13,7 @@ export type CsvInput = {
   brokerage_currency: string;
   side: string;
   date: string;
+  order_id?: string;
 };
 
 type Parsed = Omit<
@@ -21,7 +22,12 @@ type Parsed = Omit<
 > & { txnId: number };
 
 const parse = (input: CsvInput): Parsed => {
-  const { brokerage_currency: brokerageCurrency, id, ...rest } = input;
+  const {
+    brokerage_currency: brokerageCurrency,
+    id,
+    order_id: _,
+    ...rest
+  } = input;
   return {
     originalData: JSON.stringify(input),
     brokerageCurrency,
@@ -58,7 +64,7 @@ export const handle = async ({
   year,
   userAccountId,
 }: {
-  year: "2021" | "2022" | "2023";
+  year: "2021" | "2022" | "2023" | "2024";
   userAccountId: number;
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(

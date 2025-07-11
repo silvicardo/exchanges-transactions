@@ -11,7 +11,7 @@ type CsvInput = {
   "Output Amount": number;
   "USD Equivalent": `$${number}`;
   Details: string;
-} & ({"Date / Time (UTC)": string} | {"Date / Time": string});
+} & ({ "Date / Time (UTC)": string } | { "Date / Time": string });
 
 type Parsed = Omit<
   Prisma.NexoTransactionCreateInput,
@@ -29,15 +29,22 @@ const parse = (input: CsvInput): Parsed => {
     "Output Currency": outputCurrency,
     "Output Amount": outputAmount,
     "USD Equivalent": usdEquivalent,
-    Details: details
+    Details: details,
   } = input;
-  const dateTime = "Date / Time (UTC)" in input ? input["Date / Time (UTC)"] : input["Date / Time"];
+  const dateTime =
+    "Date / Time (UTC)" in input
+      ? input["Date / Time (UTC)"]
+      : input["Date / Time"];
   return {
     transactionId,
-    type: type.split(' ').join('') as NexoTransactionType,
+    type: type.split(" ").join("") as NexoTransactionType,
     inputCurrency,
     inputAmount,
-    outputCurrency,
+    outputCurrency:
+      //@ts-expect-error outputCurrency in csv features this edge case but "-" will never be in db
+      outputCurrency === "-" && (type === "Interest" || type === "Assimilation")
+        ? inputCurrency
+        : outputCurrency,
     outputAmount,
     usdEquivalent: Number(usdEquivalent.replace("$", "")),
     details,
@@ -74,7 +81,7 @@ export const handle = async ({
   year,
   userAccountId,
 }: {
-  year: "2021" | "2022" | "2023";
+  year: "2021" | "2022" | "2023" | "2024";
   userAccountId: number;
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(

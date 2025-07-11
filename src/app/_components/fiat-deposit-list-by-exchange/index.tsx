@@ -7,13 +7,11 @@ import {
   getDepositsForExchange,
 } from "@/src/app/_components/fiat-deposit-list-by-exchange/query-func";
 import { DownloadForm } from "@/src/app/_components/fiat-deposit-list-by-exchange/download-form";
+import { QueryTimespan } from "@/src/db/selectors/utils";
 
 type Props = {
   exchangeName: string;
-  timestamp: {
-    gte: Date;
-    lte: Date;
-  };
+  timestamp: QueryTimespan;
 };
 
 export default async function FiatDepositListByExchange({
@@ -32,7 +30,7 @@ export default async function FiatDepositListByExchange({
           {deposits.length > 0 ? (
             <DownloadForm
               stringifiedData={JSON.stringify(deposits)}
-              fileName={`${exchangeName}_deposits_${timestamp.lte.getFullYear()}`}
+              fileName={`${exchangeName}_deposits_${new Date(timestamp.lte).getFullYear()}`}
               ctaText={"Download CSV"}
             />
           ) : null}

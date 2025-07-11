@@ -92,7 +92,7 @@ export const handle = async ({
   year,
 }: {
   userAccountId: number;
-  year: "2021" | "2022" | "2023";
+  year: "2021" | "2022" | "2023" | "2024";
 }) => {
   const csvJsonData = await convertCSVtoJSON<CsvInput>(
     `${year}/CRYPTO_COM_EXCHANGE/dust_conversions.csv`

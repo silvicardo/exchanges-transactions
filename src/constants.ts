@@ -51,6 +51,7 @@ export const CRYPTO_CURRENCIES: Exclude<CurrencyName, "EUR" | "USD">[] = [
   "ATOM",
   "NEXO",
   "EURX",
+  "USDX",
   "BEST",
   "FIL",
   "TRX",

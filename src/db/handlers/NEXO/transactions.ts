@@ -40,7 +40,11 @@ const parse = (input: CsvInput): Parsed => {
     type: type.split(" ").join("") as NexoTransactionType,
     inputCurrency,
     inputAmount,
-    outputCurrency,
+    outputCurrency:
+      //@ts-expect-error outputCurrency in csv features this edge case but "-" will never be in db
+      outputCurrency === "-" && (type === "Interest" || type === "Assimilation")
+        ? inputCurrency
+        : outputCurrency,
     outputAmount,
     usdEquivalent: Number(usdEquivalent.replace("$", "")),
     details,

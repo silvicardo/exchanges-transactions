@@ -132,6 +132,8 @@ enum CurrencyName {
   RNDR
   POL
   RENDER
+  S
+  USDX
 }
 
 enum CurrencyTypology {
@@ -516,6 +518,7 @@ enum NexoTransactionType {
   TransferToProWallet
   ManualRepayment
   ManualSellOrder
+  Assimilation
 }
 
 model NexoTransaction {

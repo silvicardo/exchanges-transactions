@@ -134,6 +134,7 @@ enum CurrencyName {
   RENDER
   S
   USDX
+  FET
 }
 
 enum CurrencyTypology {
